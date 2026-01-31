@@ -1,60 +1,206 @@
-<!--
-  * @Author: flynn * @Date: 2024-04-12 11:02:43
- * @LastEditors: flynn
- * @LastEditTime: 2024-04-12 18:14:57
- * @description: readme
--->
+# React Mobile Template
 
-# React-Mboile-Template
+一个现代化、工程化的 React 移动端 H5 项目模板，专为商城类应用设计。基于 Vite + React + TypeScript 构建，集成了完整的开发工具链和最佳实践。
 
-一个自用的 React 移动端 H5 项目模板，主要为了减少每次项目开发前的重复操作。主要采用 Vite + React + TypeScript + SWC + Tailwind css + Zustand + Ant Design Mobile 等常用技术栈和常用库构建。
+## ✨ 特性
 
-## 主要功能
+- ⚡️ **极速开发** - Vite + SWC 提供毫秒级冷启动和快速热更新
+- 📱 **移动端适配** - 基于 postcss-px-to-viewport 的自动响应式布局
+- 🛠 **TypeScript** - 完整的类型支持，类型安全的前端应用
+- 🎨 **UI 组件库** - 集成 Ant Design Mobile，提供丰富的移动端组件
+- 🔄 **状态管理** - Zustand 轻量级状态管理，支持持久化和分模块
+- 🌐 **HTTP 客户端** - 封装 Axios，支持请求/响应拦截、取消请求、错误处理
+- 🎭 **主题切换** - 支持明暗主题切换，自动跟随系统偏好
+- 🧹 **代码规范** - ESLint + Prettier + Husky + lint-staged + commitlint
+- 🧪 **类型检查** - 严格的 TypeScript 配置，编译时类型检查
+- 🚀 **CI/CD** - GitHub Actions 自动化质量检查和部署
 
-- [x] 动态路由最佳实践
-- [x] px to rem
-- [x] 完善的 Axios
-- [x] 区分环境变量
-- [x] 最佳 Zustand 状态管理仓库实践
-- [x] Svg To Component
-- [x] 弹窗控制理念
+## 🏗 项目结构
 
-## 安装
+```
+react-mobile-template/
+├── .github/               # GitHub Actions 工作流
+├── .husky/                # Git 钩子
+├── docs/                  # 项目文档
+├── public/                # 静态资源
+├── src/
+│   ├── assets/            # 资源文件（图标、图片、样式）
+│   ├── common/            # 通用枚举和常量
+│   ├── components/        # 公共组件
+│   │   ├── Loading/       # 全局加载组件
+│   │   ├── TabBar/        # 底部导航栏
+│   │   └── ThemeProvider/ # 主题提供者
+│   ├── constants/         # 常量定义（API、主题等）
+│   ├── layouts/           # 布局组件
+│   ├── pages/             # 页面组件
+│   │   ├── home/          # 首页
+│   │   ├── category/      # 分类页
+│   │   ├── cart/          # 购物车
+│   │   ├── profile/       # 个人中心
+│   │   ├── product/       # 商品详情
+│   │   ├── login/         # 登录页
+│   │   └── error/         # 错误页
+│   ├── router/            # 路由配置
+│   ├── services/          # API 服务
+│   │   ├── http/          # HTTP 客户端封装
+│   │   └── modules/       # 业务 API 模块
+│   ├── store/             # Zustand 状态管理
+│   │   └── modules/       # 状态模块（app、loading、settings等）
+│   ├── types/             # TypeScript 类型定义
+│   │   ├── api/           # API 相关类型
+│   │   └── store/         # Store 相关类型
+│   └── utils/             # 工具函数
+├── index.html
+├── package.json
+├── tsconfig.json
+├── vite.config.ts
+└── tailwind.config.js
+```
+
+## 🚀 快速开始
+
+### 环境要求
+
+- Node.js >= 18
+- pnpm >= 8
+
+### 安装
 
 ```bash
-pnpm create keepdesign
+# 克隆项目
+git clone https://github.com/caixingorg/react-mobile-template.git
 
-# 选择 react-mobile-template
+# 进入项目目录
+cd react-mobile-template
 
+# 安装依赖
 pnpm install
 ```
 
-## 运行
+### 开发
 
 ```bash
+# 启动开发服务器
 pnpm dev
 ```
 
-## 打包
+### 构建
 
 ```bash
-pnpm sit
+# 构建测试环境
+pnpm build:sit
 
-# or
+# 构建生产环境
+pnpm build:prod
 
-pnpm prod
+# 预览生产构建
+pnpm preview
 ```
 
-## 技术栈
+## 📝 脚本命令
 
-主要采用 Vite + React + TypeScript + SWC + Tailwind css + Zustand + Ant Design Mobile 等常用技术栈和常用库构建
+| 命令                | 描述                     |
+| ------------------- | ------------------------ |
+| `pnpm dev`          | 启动开发服务器           |
+| `pnpm build`        | 构建项目（开发环境）     |
+| `pnpm build:sit`    | 构建测试环境             |
+| `pnpm build:prod`   | 构建生产环境             |
+| `pnpm preview`      | 预览生产构建             |
+| `pnpm lint`         | 运行 ESLint 检查         |
+| `pnpm lint:fix`     | 自动修复 ESLint 问题     |
+| `pnpm format`       | 格式化代码               |
+| `pnpm format:check` | 检查代码格式             |
+| `pnpm type-check`   | 运行 TypeScript 类型检查 |
 
-- [Vite](https://vitejs.cn/vite3-cn/)
-- [React](https://react.dev/)
-- [Tailwindcss](https://www.tailwindcss.cn/)
-- [Zustand](https://zustand-demo.pmnd.rs/)
-- [Ant Design Mobile](https://mobile.ant.design/zh)
+## 🔧 技术栈
 
-## 版本记录
+### 核心框架
 
-> 已移除 Valtio 状态管理仓库备选，react 框架还是遵循不可变原则较好。
+- [React 18](https://react.dev/) - 现代化的 UI 库
+- [Vite](https://vitejs.dev/) - 下一代前端构建工具
+- [TypeScript](https://www.typescriptlang.org/) - 类型安全的 JavaScript
+
+### 状态管理
+
+- [Zustand](https://zustand-demo.pmnd.rs/) - 轻量级状态管理方案
+
+### UI 组件
+
+- [Ant Design Mobile](https://mobile.ant.design/zh) - 移动端 UI 组件库
+- [Tailwind CSS](https://tailwindcss.com/) - 实用优先的 CSS 框架
+
+### 工具库
+
+- [Axios](https://axios-http.com/) - HTTP 客户端
+- [ahooks](https://ahooks.js.org/) - React Hooks 库
+- [lodash-es](https://lodash.com/) - 工具函数库
+
+### 开发工具
+
+- [ESLint](https://eslint.org/) - 代码检查
+- [Prettier](https://prettier.io/) - 代码格式化
+- [Husky](https://typicode.github.io/husky/) - Git 钩子
+- [lint-staged](https://github.com/okonet/lint-staged) - 暂存文件检查
+- [commitlint](https://commitlint.js.org/) - 提交信息规范
+
+## 🎨 代码规范
+
+### 提交信息规范
+
+使用 [Conventional Commits](https://www.conventionalcommits.org/) 规范：
+
+```
+<type>: <description>
+
+[optional body]
+
+[optional footer]
+```
+
+**Type 类型：**
+
+- `feat` - 新功能
+- `fix` - 修复
+- `docs` - 文档更新
+- `style` - 代码格式（不影响功能的变动）
+- `refactor` - 重构
+- `perf` - 性能优化
+- `test` - 测试相关
+- `chore` - 构建过程或辅助工具的变动
+
+### 代码质量
+
+项目配置了自动化代码质量检查：
+
+1. **提交前检查** - Husky + lint-staged 自动检查暂存文件
+2. **提交信息检查** - commitlint 验证提交信息格式
+3. **CI 检查** - GitHub Actions 自动运行 lint 和 type-check
+
+## 🌈 功能模块
+
+### 已实现页面
+
+| 页面     | 路径           | 描述                   |
+| -------- | -------------- | ---------------------- |
+| 首页     | `/`            | 商品推荐、搜索、轮播图 |
+| 分类     | `/category`    | 商品分类浏览           |
+| 购物车   | `/cart`        | 购物车管理             |
+| 个人中心 | `/profile`     | 用户信息、订单、设置   |
+| 商品详情 | `/product/:id` | 商品详细信息           |
+| 登录     | `/login`       | 用户登录               |
+
+### 核心功能
+
+- **主题切换** - 支持明暗主题，自动跟随系统
+- **全局加载** - 统一的加载状态管理
+- **错误处理** - 全局错误边界和错误页面
+- **请求管理** - Axios 封装，支持请求取消和错误码处理
+- **路由动画** - 页面切换过渡动画
+
+## 📄 许可证
+
+[MIT](./LICENSE)
+
+---
+
+> 如果这个项目对你有帮助，欢迎给个 ⭐️ Star！
