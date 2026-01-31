@@ -106,29 +106,54 @@ export default function Home() {
   const navigate = useNavigate();
   const [countdown, setCountdown] = useState({ hours: 2, minutes: 15, seconds: 30 });
 
-  // 倒计时
+  // 倒计时 - 使用 requestAnimationFrame + Page Visibility API 优化性能
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCountdown(prev => {
-        let { hours, minutes, seconds } = prev;
-        seconds--;
-        if (seconds < 0) {
-          seconds = 59;
-          minutes--;
-        }
-        if (minutes < 0) {
-          minutes = 59;
-          hours--;
-        }
-        if (hours < 0) {
-          hours = 2;
-          minutes = 15;
-          seconds = 30;
-        }
-        return { hours, minutes, seconds };
-      });
-    }, 1000);
-    return () => clearInterval(timer);
+    let rafId: number;
+    let lastTime = Date.now();
+
+    const tick = () => {
+      const now = Date.now();
+      if (now - lastTime >= 1000) {
+        setCountdown(prev => {
+          let { hours, minutes, seconds } = prev;
+          seconds--;
+          if (seconds < 0) {
+            seconds = 59;
+            minutes--;
+          }
+          if (minutes < 0) {
+            minutes = 59;
+            hours--;
+          }
+          if (hours < 0) {
+            hours = 2;
+            minutes = 15;
+            seconds = 30;
+          }
+          return { hours, minutes, seconds };
+        });
+        lastTime = now;
+      }
+      rafId = requestAnimationFrame(tick);
+    };
+
+    // 页面可见性变化时暂停/恢复
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        cancelAnimationFrame(rafId);
+      } else {
+        lastTime = Date.now(); // 重置时间，避免跳变
+        rafId = requestAnimationFrame(tick);
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    rafId = requestAnimationFrame(tick);
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
   }, []);
 
   const formatNum = (num: number) => num.toString().padStart(2, '0');

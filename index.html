@@ -1,10 +1,24 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <title>Vite + React + TS</title>
+    
+    <!-- SEO & PWA -->
+    <title>React Mobile Template - 移动端商城模板</title>
+    <meta name="description" content="基于 React + Vite + TypeScript 的现代化移动端商城模板，提供完整的购物体验" />
+    <meta name="theme-color" content="#ff5000" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="format-detection" content="telephone=no" />
+    
+    <!-- DNS 预解析 - 根据实际 API 域名修改 -->
+    <link rel="dns-prefetch" href="https://api.example.com" />
+    <link rel="preconnect" href="https://api.example.com" crossorigin />
+    
+    <!-- 预加载关键资源 -->
+    <link rel="preload" href="/src/main.tsx" as="script" type="module" />
   </head>
   <body>
     <div id="root"></div>

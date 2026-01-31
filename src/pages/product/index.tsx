@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Swiper } from 'antd-mobile';
 import { LeftOutline, StarOutline, MessageOutline, AppstoreOutline } from 'antd-mobile-icons';
+import { throttle } from 'lodash-es';
 import styles from './index.module.css';
 
 // 模拟商品数据
@@ -46,13 +47,26 @@ export default function Product() {
   const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
 
+  // 使用 throttle 优化滚动性能，100ms 节流
+  const handleScroll = useMemo(
+    () =>
+      throttle(
+        () => {
+          setIsScrolled(window.scrollY > 100);
+        },
+        100,
+        { leading: false, trailing: true }
+      ),
+    []
+  );
+
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 100);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      handleScroll.cancel();
+      window.removeEventListener('scroll', handleScroll);
     };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [handleScroll]);
 
   return (
     <div className={styles.container}>

@@ -80,6 +80,6 @@ export const useAppStore = create<Store & Actions>()(
         // })
       }
     ),
-    { name: StoreKey.APP, enabled: true }
+    { name: StoreKey.APP, enabled: import.meta.env.DEV }
   )
 );
