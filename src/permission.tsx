@@ -1,5 +1,5 @@
 /*
-  * @Author: flynn * @Date: 2024-08-19 21:19:46
+ * @Author: flynn * @Date: 2024-08-19 21:19:46
  * @LastEditors: flynn
  * @LastEditTime: 2024-08-19 22:10:28
  * @description: permission 权限控制的最佳使用
@@ -20,7 +20,7 @@ import { useAppStore } from '@/store';
 
 export type AuthStatus = {
   token: string | void;
-}
+};
 
 /**
  * root根目录的Loader 根据需要设置使用
@@ -42,7 +42,7 @@ export function ProtectedLoader({ request }: LoaderFunctionArgs) {
   // to this page upon successful authentication
   const { token } = useAppStore.getState();
 
-  if(!token) {
+  if (!token) {
     const params = new URLSearchParams();
     params.set('from', new URL(request.url).pathname);
     return redirect('/login?' + params.toString());
@@ -56,7 +56,7 @@ export function ProtectedLoader({ request }: LoaderFunctionArgs) {
  */
 export async function LoginLoader() {
   const { token } = useAppStore.getState();
-  if(token) {
+  if (token) {
     return redirect('/');
   }
   return null;
@@ -71,7 +71,7 @@ export async function LoginAction({ request }: LoaderFunctionArgs) {
   const app = useAppStore.getState();
 
   // Validate our form inputs and return validation errors via useActionData()
-  if(!token) {
+  if (!token) {
     return console.warn('You must provide a token to log in');
     // return {
     // error: 'You must provide a token to log in'
@@ -84,7 +84,7 @@ export async function LoginAction({ request }: LoaderFunctionArgs) {
   // Sign in and redirect to the proper destination if successful.
   try {
     app.SET_TOKEN(token);
-  } catch(error) {
+  } catch (error) {
     // Unused as of now but this is how you would handle invalid
     // username/password combinations - just like validating the inputs
     // above

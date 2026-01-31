@@ -1,5 +1,5 @@
 /*
-  * @Author: flynn * @Date: 2024-04-11 11:10:56
+ * @Author: flynn * @Date: 2024-04-11 11:10:56
  * @LastEditors: flynns 1137896420@qq.com
  * @LastEditTime: 2024-08-08 21:29:04
  * @description: 动态路由相关
@@ -27,8 +27,8 @@ export const dynamicRoutes: App.Route[] = [
     component: 'home',
     handle: {
       title: '首页',
-      roles: ['admin', 'other']
-    }
+      roles: ['admin', 'other'],
+    },
   },
   {
     id: 'Home2',
@@ -36,16 +36,16 @@ export const dynamicRoutes: App.Route[] = [
     component: 'home2',
     handle: {
       title: '首页',
-      roles: ['admin', 'other']
+      roles: ['admin', 'other'],
     },
     protected: false,
     children: [
       {
         id: 'Home3',
         path: 'home3',
-        component: 'home/router/home3'
-      }
-    ]
+        component: 'home/router/home3',
+      },
+    ],
   },
   {
     id: 'User1',
@@ -54,8 +54,8 @@ export const dynamicRoutes: App.Route[] = [
     parent: '/user',
     handle: {
       title: 'user',
-      roles: ['admin', 'other']
-    }
+      roles: ['admin', 'other'],
+    },
   },
   {
     id: 'User3',
@@ -64,8 +64,8 @@ export const dynamicRoutes: App.Route[] = [
     parent: '/user',
     handle: {
       title: 'user',
-      roles: ['admin', 'other']
-    }
+      roles: ['admin', 'other'],
+    },
   },
   {
     id: 'User4',
@@ -74,8 +74,8 @@ export const dynamicRoutes: App.Route[] = [
     parent: '/user',
     handle: {
       title: 'user',
-      roles: ['admin', 'other']
+      roles: ['admin', 'other'],
     },
-    protected: false
-  }
+    protected: false,
+  },
 ];

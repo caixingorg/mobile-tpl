@@ -1,5 +1,5 @@
 /*
-  * @Author: flynn * @Date: 2024-03-29 17:33:13
+ * @Author: flynn * @Date: 2024-03-29 17:33:13
  * @LastEditors: flynn
  * @LastEditTime: 2024-04-07 17:34:57
  * @description: error page
@@ -17,7 +17,12 @@ export default function ErrorPage() {
       <p>
         <i>{(error && (error.statusText || error.message)) || 'Page not found!'}</i>
       </p>
-      <Link to="/" className="block mx-auto my-3 bg-amber-500 w-24 h-8 leading-8 rounded-md text-white">Go Home</Link>
+      <Link
+        to="/"
+        className="block mx-auto my-3 bg-amber-500 w-24 h-8 leading-8 rounded-md text-white"
+      >
+        Go Home
+      </Link>
     </div>
   );
 }

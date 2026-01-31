@@ -1,8 +1,6 @@
-
 import { useSelector, useSettings } from '@/store';
 
 export default function ThemeOne() {
-
   // const { theme, SET_THEME } = useSettings();
   // const theme = useSettings((state) => state.theme);
   // const SET_THEME = useSettings((state) => state.SET_THEME);
@@ -15,7 +13,12 @@ export default function ThemeOne() {
   return (
     <div>
       <div>theme: {theme}</div>
-      <button className="p-1 bg-pink-400" onClick={() => SET_THEME(theme === 'dark' ? 'light' : 'dark')}>ThemeOne theme</button>
+      <button
+        className="p-1 bg-pink-400"
+        onClick={() => SET_THEME(theme === 'dark' ? 'light' : 'dark')}
+      >
+        ThemeOne theme
+      </button>
     </div>
   );
 }

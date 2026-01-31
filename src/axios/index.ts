@@ -1,5 +1,5 @@
 /*
-  * @Author: flynn * @Date: 2023-03-14 17:53:45
+ * @Author: flynn * @Date: 2023-03-14 17:53:45
  * @LastEditors: flynn
  * @LastEditTime: 2024-04-30 14:42:43
  * @description: axios
@@ -18,7 +18,7 @@ const whiteList: string[] = ['/qiniu/upload/uptoken'];
 // axios基础配置
 const service = axios.create({
   timeout: 20000,
-  baseURL: import.meta.env.VITE_APP_BASE_URL
+  baseURL: import.meta.env.VITE_APP_BASE_URL,
 });
 
 // 请求拦截
@@ -27,7 +27,7 @@ service.interceptors.request.use(
     // 添加token
     const token = useAppStore.getState().token;
 
-    if(token) {
+    if (token) {
       config.headers['token'] = token;
     }
 
@@ -51,14 +51,14 @@ service.interceptors.response.use(
     /**
      * 处理错误响应
      */
-    if(whiteList.some(e => e.match(url))) {
+    if (whiteList.some(e => e.match(url))) {
       console.log('接口通过白名单，不需要异常处理url:>> ', url);
     } else {
       ErrorCodeHandle(response);
     }
 
     // console.log('响应拦截 response:>> ', response)
-    if(response.data.code === 200) {
+    if (response.data.code === 200) {
       return response;
     } else {
       console.error('响应异常:>> ', response);
@@ -72,9 +72,9 @@ service.interceptors.response.use(
      */
     console.error('响应异常:>> ', err);
 
-    if(err.code === 'ERR_CANCELED') {
+    if (err.code === 'ERR_CANCELED') {
       console.log('请求取消url:>> ', err.config?.url);
-    } else if(err.code === 'ECONNABORTED' && err.message.includes('timeout')) {
+    } else if (err.code === 'ECONNABORTED' && err.message.includes('timeout')) {
       // message.error('请求超时,请检查服务器状态')
       return Promise.reject(err);
     } else {
@@ -86,18 +86,18 @@ service.interceptors.response.use(
 
 /**
  * 基础的请求
-*/
+ */
 /** POST表单格式 */
 export function post<T = unknown>(url: string, params?: unknown) {
   return new Promise<R<T>>((resolve, reject) => {
     service
       .post<R<T>>(url, qs.stringify(params), {
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
-        }
+          'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
+        },
       })
       .then(
-        (response) => {
+        response => {
           response && resolve(response.data);
         },
         (err: AxiosError) => {

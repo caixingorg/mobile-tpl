@@ -10,21 +10,21 @@ import { create } from 'zustand';
 import { createJSONStorage, persist, devtools } from 'zustand/middleware';
 
 type Store = {
-  token: string
+  token: string;
   // ... other state properties
-}
+};
 
 type Actions = {
-  SET_TOKEN: (token: string) => void
-  REMOVE_TOKEN: () => void
-  RESET: () => void
-  SET_STATE: (data: { key: keyof Store, val: Store[keyof Store] }) => void
+  SET_TOKEN: (token: string) => void;
+  REMOVE_TOKEN: () => void;
+  RESET: () => void;
+  SET_STATE: (data: { key: keyof Store; val: Store[keyof Store] }) => void;
   // ... other action creators
-}
+};
 
 // define the initial state
 const initialState = (): Store => ({
-  token: ''
+  token: '',
 });
 
 /**
@@ -33,53 +33,53 @@ const initialState = (): Store => ({
  */
 const APP_STORE_VERSION: number = 0.1;
 
-export const useAppStore = create<Store & Actions>()(devtools(
-  persist(
-    (set) => ({
-      ...initialState(),
+export const useAppStore = create<Store & Actions>()(
+  devtools(
+    persist(
+      set => ({
+        ...initialState(),
 
-      SET_STATE(data: { key: keyof Store, val: Store[keyof Store] }) {
-        set({ [data.key]: data.val });
-      },
+        SET_STATE(data: { key: keyof Store; val: Store[keyof Store] }) {
+          set({ [data.key]: data.val });
+        },
 
-      SET_TOKEN(token) {
-        // set({ token })
-        set(() => ({ token }));
-      },
+        SET_TOKEN(token) {
+          // set({ token })
+          set(() => ({ token }));
+        },
 
-      REMOVE_TOKEN() {
-        set({ token: '' });
-        // set(state => ({ token: '' }))
-      },
+        REMOVE_TOKEN() {
+          set({ token: '' });
+          // set(state => ({ token: '' }))
+        },
 
-      RESET() {
-        set(initialState());
+        RESET() {
+          set(initialState());
+        },
+      }),
+      {
+        name: StoreKey.APP, // unique name
+        storage: createJSONStorage(() => sessionStorage),
+        version: APP_STORE_VERSION, // a migration will be triggered if the version in the storage mismatches this one
+
+        // migration logic
+        migrate: (persistedState, version) => {
+          const state = initialState();
+
+          if (version !== APP_STORE_VERSION) {
+            Object.assign(state, persistedState);
+          }
+
+          return state;
+        },
+
+        // Filter the persisted value. By default, everything is persisted.
+        // partialize: state => ({
+        //   openId: state.openId,
+        //   token: state.token
+        // })
       }
-
-    }),
-    {
-      name: StoreKey.APP, // unique name
-      storage: createJSONStorage(() => sessionStorage),
-      version: APP_STORE_VERSION, // a migration will be triggered if the version in the storage mismatches this one
-
-      // migration logic
-      migrate: (persistedState, version) => {
-
-        const state = initialState();
-
-        if(version !== APP_STORE_VERSION) {
-          Object.assign(state, persistedState);
-        }
-
-        return state;
-      }
-
-      // Filter the persisted value. By default, everything is persisted.
-      // partialize: state => ({
-      //   openId: state.openId,
-      //   token: state.token
-      // })
-    }
-  ),
-  { name: StoreKey.APP, enabled: true }
-));
+    ),
+    { name: StoreKey.APP, enabled: true }
+  )
+);

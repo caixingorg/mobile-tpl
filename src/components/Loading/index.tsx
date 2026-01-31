@@ -1,5 +1,5 @@
 /*
-  * @Author: flynn * @Date: 2024-03-29 18:14:56
+ * @Author: flynn * @Date: 2024-03-29 18:14:56
  * @LastEditors: flynn
  * @LastEditTime: 2024-04-13 22:49:21
  * @description: loading 组件
@@ -10,18 +10,15 @@ import { useSetState } from 'ahooks';
 import styles from './index.module.less';
 
 export default function Loading() {
-
   const [state] = useSetState({
-    type: TYPE.TWO
+    type: TYPE.TWO,
   });
 
   const Component = useMemo(() => {
     return state.type === TYPE.ONE ? LoadingOne : LoadingTwo;
   }, [state.type]);
 
-  return (
-    <Component />
-  );
+  return <Component />;
 }
 
 // 规则循环旋转
@@ -49,5 +46,5 @@ function LoadingTwo() {
 
 const TYPE = {
   ONE: 'one',
-  TWO: 'two'
+  TWO: 'two',
 };

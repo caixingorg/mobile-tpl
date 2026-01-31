@@ -21,15 +21,15 @@ export default defineConfig(({ mode }) => {
 
   let delDir: (path: string) => void = (path: string) => {};
   // 非本地环境删除dist文件夹
-  if(!isDev) {
+  if (!isDev) {
     delDir = (path: string) => {
       let files: string[] = [];
-      if(fs.existsSync(path)) {
+      if (fs.existsSync(path)) {
         files = fs.readdirSync(path);
         files.forEach(file => {
           const curPath: string = path + '/' + file;
           // 判断是否是文件夹
-          if(fs.statSync(curPath).isDirectory()) {
+          if (fs.statSync(curPath).isDirectory()) {
             delDir(curPath); //递归删除文件夹
           } else {
             // 是文件的话说明是最后一层不需要递归
@@ -52,13 +52,13 @@ export default defineConfig(({ mode }) => {
   let outputDir: string = '';
 
   // 测试使用dist打包
-  if(isSit) {
+  if (isSit) {
     publicPath = env.VITE_APP_RESOURCE_URL as string;
     outputDir = 'dist';
   }
 
   // 生产/预生产使用时间戳
-  if(isProd) {
+  if (isProd) {
     // 前端打包解决缓存问题
     const formatDate = (): string => {
       const time: Date = new Date();
@@ -78,7 +78,7 @@ export default defineConfig(({ mode }) => {
     const dirName: string = formatDate();
     // publicPath = `${env.VITE_APP_RESOURCE_URL}${dirName}`
     publicPath = `${env.VITE_APP_RESOURCE_URL}`;
-    if(isProd) {
+    if (isProd) {
       // outputDir = `./dist/${dirName}`
       outputDir = `./dist`;
     }
@@ -87,10 +87,7 @@ export default defineConfig(({ mode }) => {
   return {
     base: publicPath,
 
-    plugins: [
-      react(),
-      svgr()
-    ],
+    plugins: [react(), svgr()],
 
     build: {
       outDir: outputDir,
@@ -106,24 +103,26 @@ export default defineConfig(({ mode }) => {
       //   }
       // },
       rollupOptions: {
-        output: { // 对打包的静态资源做处理
+        output: {
+          // 对打包的静态资源做处理
           chunkFileNames: 'assets/js/[name]-[hash].js',
           entryFileNames: 'assets/js/[name]-[hash].js',
           assetFileNames: 'assets/[ext]/[name]-[hash].[ext]',
-          manualChunks(id) { // 超大静态资源拆分
-            if(id.includes('node_modules')) {
+          manualChunks(id) {
+            // 超大静态资源拆分
+            if (id.includes('node_modules')) {
               const list = id.toString().split('node_modules/');
               return list[list.length - 1].split('/')[0].toString();
             }
-          }
-        }
-      }
+          },
+        },
+      },
     },
 
     resolve: {
       alias: {
-        '@': resolve(__dirname, './src')
-      }
+        '@': resolve(__dirname, './src'),
+      },
     },
 
     server: {
@@ -134,24 +133,19 @@ export default defineConfig(({ mode }) => {
       strictPort: false, // 为true若端口已被占用则会直接退出
       proxy: {
         '/api': {
-          target: env.VITE_APP_SERVE_URl,
+          target: env.VITE_APP_SERVE_URL,
           changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api/, '')
-        }
-      }
+          rewrite: path => path.replace(/^\/api/, ''),
+        },
+      },
     },
 
     css: {
-      postcss: { // vite内配置postcss后 postcss.config.js失效
+      postcss: {
+        // vite内配置postcss后 postcss.config.js失效
         plugins: [
           Autoprefixer({
-            overrideBrowserslist: [
-              'Android 4.1',
-              'iOS 7.1',
-              'Chrome > 31',
-              'ff > 31',
-              'ie >= 8'
-            ]
+            overrideBrowserslist: ['Android 4.1', 'iOS 7.1', 'Chrome > 31', 'ff > 31', 'ie >= 8'],
           }),
 
           PostCssPxToRem({
@@ -164,13 +158,12 @@ export default defineConfig(({ mode }) => {
             propList: ['*'], // 需要转换的属性，这里选择全部都进行转换
             selectorBlackList: ['norem'], // 忽略转换正则匹配的属性  // norem-开头的class，不进行rem转换
             // minPixelValue: 0, // 设置要替换的最小像素值(3px会被转rem)。 默认 0
-            exclude: /node_modules/i // node_modules目录下的文件，不进行rem转换
+            exclude: /node_modules/i, // node_modules目录下的文件，不进行rem转换
           }),
 
-          Tailwindcss()
-        ]
-      }
-    }
-
+          Tailwindcss(),
+        ],
+      },
+    },
   };
 });

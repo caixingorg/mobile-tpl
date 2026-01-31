@@ -1,11 +1,10 @@
-
 /*
-* @Author: dushuai
-* @Date: 2024-03-29 16:13:37
+ * @Author: dushuai
+ * @Date: 2024-03-29 16:13:37
  * @LastEditors: flynn
  * @LastEditTime: 2024-04-30 14:40:11
-* @description: login
-*/
+ * @description: login
+ */
 import { useNavigate, useSearchParams, useSubmit } from 'react-router-dom';
 
 import { useSettings } from '@/store';
@@ -19,7 +18,7 @@ function Login() {
 
   function handleSet() {
     setParams({
-      a: 'b'
+      a: 'b',
     });
   }
 
@@ -32,24 +31,13 @@ function Login() {
 
   return (
     <>
-      login query a =  {params.get('a')}
-
+      login query a = {params.get('a')}
       <div>theme: {theme}</div>
-      <button onClick={() => SET_THEME('light')}>
-        theme
-      </button>
-
-      <button onClick={handleSet}>
-        set
-      </button>
+      <button onClick={() => SET_THEME('light')}>theme</button>
+      <button onClick={handleSet}>set</button>
       <br />
-      <button onClick={() => navigate('/')}>
-        返回
-      </button>
-
-      <button onClick={handleLogin}>
-        登陆
-      </button>
+      <button onClick={() => navigate('/')}>返回</button>
+      <button onClick={handleLogin}>登陆</button>
     </>
   );
 }

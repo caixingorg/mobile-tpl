@@ -1,5 +1,5 @@
 /*
-  * @Author: flynn * @Date: 2024-04-07 10:25:43
+ * @Author: flynn * @Date: 2024-04-07 10:25:43
  * @LastEditors: flynn
  * @LastEditTime: 2024-08-10 16:53:27
  * @description: BasicsLayout
@@ -11,7 +11,6 @@ import { useEffect } from 'react';
 import { usePopup } from '@/hooks';
 
 export default function BasicsLayout() {
-
   const { pathname } = useLocation();
 
   const { CLEAR } = usePopupStore(useSelector(['CLEAR']));
@@ -26,7 +25,5 @@ export default function BasicsLayout() {
     };
   }, [pathname]);
 
-  return (
-    <Outlet />
-  );
+  return <Outlet />;
 }

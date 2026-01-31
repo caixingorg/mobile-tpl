@@ -1,5 +1,5 @@
 /*
-  * @Author: flynn * @Date: 2024-04-12 15:44:41
+ * @Author: flynn * @Date: 2024-04-12 15:44:41
  * @LastEditors: flynn
  * @LastEditTime: 2024-04-30 15:00:25
  * @description: 测试弹窗组件
@@ -11,18 +11,17 @@ import { usePopupStore } from '@/store';
 import { PopupNames } from '@/common';
 
 export type PopTestRef = {
-  show: boolean,
-  setShow: React.Dispatch<React.SetStateAction<boolean>>
-}
+  show: boolean;
+  setShow: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
 export default forwardRef(function PopTest(_, ref) {
-
   const [show, setShow] = useState(false);
 
   useImperativeHandle(ref, (): PopTestRef => {
     return {
       show,
-      setShow
+      setShow,
     };
   }, []);
 
@@ -34,10 +33,10 @@ export default forwardRef(function PopTest(_, ref) {
 
   return (
     <CenterPopup visible={show}>
-      <div className={styles.bg}>
-        我是弹窗
+      <div className={styles.bg}>我是弹窗</div>
+      <div className={styles.close} onClick={() => setShow(false)}>
+        close
       </div>
-      <div className={styles.close} onClick={() => setShow(false)}>close</div>
     </CenterPopup>
   );
 });

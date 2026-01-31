@@ -4,7 +4,7 @@ import { pick } from 'lodash-es';
 
 type Pick<T, K extends keyof T> = {
   [P in K]: T[P];
-}
+};
 
 type Many<T> = T | readonly T[];
 
@@ -19,18 +19,19 @@ type Many<T> = T | readonly T[];
  * @param fields 需要获取的state字段列表，不填默认全部
  * @returns 返回需要的state
  */
-export function useSelector<T extends object, K extends keyof T>(fields?: Many<K>): (state: T) => Pick<T, K> {
+export function useSelector<T extends object, K extends keyof T>(
+  fields?: Many<K>
+): (state: T) => Pick<T, K> {
   type P = Pick<T, K>;
 
   const prev = useRef<P>({} as P);
 
   return (state: T) => {
-    if(state) {
+    if (state) {
       const next = fields ? pick(state, fields) : state;
       return shallow(prev.current, next) ? prev.current : (prev.current = next);
     }
 
     return prev.current;
   };
-
 }

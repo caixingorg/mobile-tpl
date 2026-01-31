@@ -1,5 +1,5 @@
 /*
-  * @Author: flynn * @Date: 2024-04-18 12:28:06
+ * @Author: flynn * @Date: 2024-04-18 12:28:06
  * @LastEditors: flynn
  * @LastEditTime: 2024-08-10 13:28:02
  * @description: 创建自定义store
@@ -11,23 +11,27 @@ import { PersistOptions, combine, devtools, persist } from 'zustand/middleware';
 type SetStoreState<T> = (
   partial: T | Partial<T> | ((state: T) => T | Partial<T>),
   replace?: boolean | undefined
-) => void
+) => void;
 
-export type STATE<T> = { key: keyof T, val: T[keyof T] }
+export type STATE<T> = { key: keyof T; val: T[keyof T] };
 
 export type MakeState = {
-  updateTime: number
-}
+  updateTime: number;
+};
 
 export type MakeUpdater<T> = {
-  SET_STATE: (data: STATE<T>) => void
-  SET_UPDATE_TIME: () => void
-  RESET: () => void
-}
+  SET_STATE: (data: STATE<T>) => void;
+  SET_UPDATE_TIME: () => void;
+  RESET: () => void;
+};
 
-type Store<S extends StoreApi<unknown>> = UseBoundStore<S>
+type Store<S extends StoreApi<unknown>> = UseBoundStore<S>;
 
-export type Methods<T, M> = (set: SetStoreState<T>, get: () => M & T & MakeUpdater<T>, store: Store<any>) => M
+export type Methods<T, M> = (
+  set: SetStoreState<T>,
+  get: () => M & T & MakeUpdater<T>,
+  store: Store<any>
+) => M;
 
 /**
  * 创建store
@@ -42,59 +46,57 @@ export function createCustomStore<T extends object, M>(
   methods: Methods<T & MakeState, M>,
   persistOptions: PersistOptions<T & MakeState>
 ) {
-
   const initialState: MakeState = {
-    updateTime: 0
+    updateTime: 0,
   };
 
   const newStore = Object.assign(initialState, state);
 
-  type State = T & MakeState
+  type State = T & MakeState;
 
-  type Get = () => State & MakeUpdater<State> & M
+  type Get = () => State & MakeUpdater<State> & M;
 
-  type Set = Partial<MakeState & T>
+  type Set = Partial<MakeState & T>;
 
-  type Update =
-  | State
-  | Partial<State>
-  | ((state: State) => State | Partial<State>);
+  type Update = State | Partial<State> | ((state: State) => State | Partial<State>);
 
-  return create(devtools(
-    persist(
-      combine(
-        newStore,
+  return create(
+    devtools(
+      persist(
+        combine(
+          newStore,
 
-        (set, get, store) => ({
-          ...methods(set, get as Get, store),
+          (set, get, store) => ({
+            ...methods(set, get as Get, store),
 
-          /**
+            /**
              * 一个通用set的方法 可用于偷懒
              * @param data
              */
-          SET_STATE: (data: Update) => {
-            set(data);
-          },
+            SET_STATE: (data: Update) => {
+              set(data);
+            },
 
-          /**
+            /**
              * 重置整个store
              */
-          RESET() {
-            set(newStore);
-          },
+            RESET() {
+              set(newStore);
+            },
 
-          /**
+            /**
              * 更新时间
              */
-          SET_UPDATE_TIME() {
-            set(() => ({ updateTime: Date.now() }) as Set);
-          }
-        })
-      ),
+            SET_UPDATE_TIME() {
+              set(() => ({ updateTime: Date.now() }) as Set);
+            },
+          })
+        ),
         persistOptions as never
-    ),
-    { name, enabled: true }
-  ));
+      ),
+      { name, enabled: true }
+    )
+  );
 }
 
 /**

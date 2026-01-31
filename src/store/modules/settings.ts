@@ -1,5 +1,5 @@
 /*
-  * @Author: flynn * @Date: 2024-04-18 15:09:58
+ * @Author: flynn * @Date: 2024-04-18 15:09:58
  * @LastEditors: flynn
  * @LastEditTime: 2024-08-10 13:24:16
  * @description: settings store
@@ -13,15 +13,15 @@ export type Theme = 'dark' | 'light';
 export type Lang = 'zh' | 'en';
 
 type DefaultStore = {
-  theme: Theme
-  lang: Lang
-}
+  theme: Theme;
+  lang: Lang;
+};
 
 type Store = DefaultStore & MakeState;
 
 const initialState = (): DefaultStore => ({
   theme: 'light',
-  lang: 'zh'
+  lang: 'zh',
 });
 
 /**
@@ -35,12 +35,10 @@ export const useSettings = createCustomStore(
 
   initialState(),
 
-  (set) => ({
-
+  set => ({
     SET_THEME(theme: Store['theme']) {
       set({ theme });
-    }
-
+    },
   }),
 
   {
@@ -50,14 +48,13 @@ export const useSettings = createCustomStore(
 
     // migration logic
     migrate: (persistedState, version) => {
-
       const state = initialState();
 
-      if(version !== APP_STORE_VERSION) {
+      if (version !== APP_STORE_VERSION) {
         Object.assign(state, persistedState);
       }
 
       return state as Store;
-    }
+    },
   }
 );

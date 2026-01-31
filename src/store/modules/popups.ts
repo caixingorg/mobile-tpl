@@ -1,5 +1,5 @@
 /*
-  * @Author: flynn * @Date: 2024-04-30 14:47:16
+ * @Author: flynn * @Date: 2024-04-30 14:47:16
  * @LastEditors: flynn
  * @LastEditTime: 2024-04-30 15:56:23
  * @description: popups store
@@ -10,28 +10,30 @@ import { MakeState, createCustomStore, serializerMap, deserializerMap } from '..
 import { createJSONStorage } from 'zustand/middleware';
 
 type Store = {
-  list: List
-}
+  list: List;
+};
 
 type Actions = {
-  SET_POPUP: (key: PopupNames, item: Item) => void
-  REMOVE_POPUP: (key: PopupNames) => void
-  CLEAR: () => void
-}
+  SET_POPUP: (key: PopupNames, item: Item) => void;
+  REMOVE_POPUP: (key: PopupNames) => void;
+  CLEAR: () => void;
+};
 
 type Item = {
-  show: boolean
-  setShow: (show: boolean) => void
-}
+  show: boolean;
+  setShow: (show: boolean) => void;
+};
 
-type List = {
-  [key in PopupNames]: Item
-} | object
+type List =
+  | {
+      [key in PopupNames]: Item;
+    }
+  | object;
 
-type MapList = Map<PopupNames, Item>
+type MapList = Map<PopupNames, Item>;
 
 const initialState = (): Store => ({
-  list: {}
+  list: {},
 });
 
 /**
@@ -46,17 +48,15 @@ export const usePopupStore = createCustomStore<Store, Actions>(
   initialState(),
 
   (set, get) => ({
-
     /**
      * 挂载popup
      * @param key
      * @param item
      */
     SET_POPUP(key: PopupNames, item: Item) {
-
       const list = getList(get().list);
 
-      if(list.has(key)) {
+      if (list.has(key)) {
         console.warn('弹窗已挂载，将清除历史状态:>> ', key);
         get().REMOVE_POPUP(key);
       }
@@ -72,7 +72,7 @@ export const usePopupStore = createCustomStore<Store, Actions>(
     REMOVE_POPUP(key: PopupNames) {
       const list = getList(get().list);
 
-      if(list.has(key)) {
+      if (list.has(key)) {
         list.delete(key);
       } else {
         console.warn('弹窗未挂载:>> ', key);
@@ -86,9 +86,8 @@ export const usePopupStore = createCustomStore<Store, Actions>(
     CLEAR() {
       const list = getList(get().list);
       list.clear();
-      set({ list: {}});
-    }
-
+      set({ list: {} });
+    },
   }),
 
   {
@@ -98,16 +97,16 @@ export const usePopupStore = createCustomStore<Store, Actions>(
 
     // migration logic
     migrate: (persistedState, version) => {
-      type State = Store & MakeState
+      type State = Store & MakeState;
 
       const state = initialState();
 
-      if(version !== APP_STORE_VERSION) {
+      if (version !== APP_STORE_VERSION) {
         Object.assign(state, persistedState);
       }
 
       return state as State;
-    }
+    },
   }
 );
 

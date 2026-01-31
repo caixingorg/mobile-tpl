@@ -9,16 +9,16 @@ import routes, { getPath, modules } from '@/router/routes';
 import { MakeState, createCustomStore } from '../store';
 
 type Store = {
-  routes: Array<Route>
-}
+  routes: Array<Route>;
+};
 
 type Actions = {
-  SET_ROUTER: (routes: Array<Route>) => void
-  REMOVE_ROUTER: () => void
-  GenerateRoutes: () => Promise<RouteObject[]>
-}
+  SET_ROUTER: (routes: Array<Route>) => void;
+  REMOVE_ROUTER: () => void;
+  GenerateRoutes: () => Promise<RouteObject[]>;
+};
 
-export type Route = App.Route
+export type Route = App.Route;
 
 /**
  * 当前store版本
@@ -27,7 +27,7 @@ export type Route = App.Route
 const APP_STORE_VERSION: number = 0.1;
 
 const initialState = (): Store => ({
-  routes: []
+  routes: [],
 });
 
 export const usePermission = createCustomStore<Store, Actions>(
@@ -36,7 +36,6 @@ export const usePermission = createCustomStore<Store, Actions>(
   initialState(),
 
   (set, get) => ({
-
     /**
      * 设置路由
      * @param routes
@@ -53,25 +52,25 @@ export const usePermission = createCustomStore<Store, Actions>(
      * 生成路由表
      */
     GenerateRoutes: () => {
-      return new Promise((resolve) => {
+      return new Promise(resolve => {
         // dynamicRoutes 可替换为接口获取
         get().SET_ROUTER(dynamicRoutes);
         const r = filterToRouter(dynamicRoutes);
 
-        if(r.size === 0) return resolve([]);
+        if (r.size === 0) return resolve([]);
 
         Array.from(r.keys()).map(k => {
           const index = routes.findIndex(item => item.path === k);
           const pre = routes[index]?.children || [],
-            children = r.get(k)?.filter(item => pre.findIndex(i => i.path === item.path) === -1) || [];
+            children =
+              r.get(k)?.filter(item => pre.findIndex(i => i.path === item.path) === -1) || [];
 
-            routes[index] && (routes[index].children = [...pre, ...children]);
+          routes[index] && (routes[index].children = [...pre, ...children]);
         });
 
         resolve(routes);
       });
-    }
-
+    },
   }),
 
   {
@@ -81,16 +80,16 @@ export const usePermission = createCustomStore<Store, Actions>(
 
     // migration logic
     migrate: (persistedState, version) => {
-      type State = Store & MakeState
+      type State = Store & MakeState;
 
       const state = initialState();
 
-      if(version !== APP_STORE_VERSION) {
+      if (version !== APP_STORE_VERSION) {
         Object.assign(state, persistedState);
       }
 
       return state as State;
-    }
+    },
   }
 );
 
@@ -108,7 +107,7 @@ function filterToRouter(routes: Route[]) {
     const { parent, ...r } = route;
     const k = parent || '/';
     const v = rs.get(k);
-    if(v) rs.set(k, [...v, r]);
+    if (v) rs.set(k, [...v, r]);
     else rs.set(k, [r]);
   });
 
@@ -133,19 +132,18 @@ function filterAsyncRouter(routes: Route[], parentPath?: string) {
       Component: createComponent(route.component),
       // children: route.children && route.children.length ? filterAsyncRouter(route.children) : void 0,
       handle: route.handle,
-      parent: route.parent || '/'
+      parent: route.parent || '/',
     };
 
-    if(route.protected !== false) {
+    if (route.protected !== false) {
       r.loader = ProtectedLoader;
     }
 
-    if(route.children && route.children.length) {
+    if (route.children && route.children.length) {
       r.children = filterAsyncRouter(route.children, r.path);
     }
 
     return r;
-
   });
 }
 
@@ -166,6 +164,6 @@ function createComponent(name: string) {
  * @returns
  */
 function joinPath(path?: string, parent?: string) {
-  if(!path) return void 0;
+  if (!path) return void 0;
   return `${parent || ''}/${path.replace(/^\/+/, '')}`;
 }

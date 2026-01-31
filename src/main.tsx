@@ -1,5 +1,5 @@
 /*
-  * @Author: flynn * @Date: 2024-03-29 12:30:24
+ * @Author: flynn * @Date: 2024-03-29 12:30:24
  * @LastEditors: flynn
  * @LastEditTime: 2024-08-10 16:22:43
  * @description: main入口
@@ -12,8 +12,8 @@ import App from './App';
 
 import './assets/style/index.css';
 
-ReactDOM
-  .createRoot(document.getElementById('root')!)
-  .render(<React.StrictMode>
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
     <App />
-  </React.StrictMode>);
+  </React.StrictMode>
+);

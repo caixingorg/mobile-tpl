@@ -1,4 +1,3 @@
- 
 import { ComponentType, lazy } from 'react';
 import { RouteObject } from 'react-router-dom';
 
@@ -8,8 +7,8 @@ import { LoginAction, LoginLoader, LogoutAction, RootLoader } from '@/permission
 const BasicsLayout = lazy(() => import('@/layouts/basics'));
 
 type Module = {
-  [keys in string]: () => Promise<{ default: ComponentType<any>; }>
-}
+  [keys in string]: () => Promise<{ default: ComponentType<any> }>;
+};
 
 /** 所有pages下页面文件 */
 const pagesModules = import.meta.glob('@/pages/*/index.tsx') as unknown as Module;
@@ -18,7 +17,7 @@ const nestModules = import.meta.glob('@/pages/*/router/*/index.tsx') as unknown 
 /** 所有页面文件 */
 export const modules: Module = {
   ...pagesModules,
-  ...nestModules
+  ...nestModules,
 };
 
 const routes: RouteObject[] = [
@@ -27,24 +26,24 @@ const routes: RouteObject[] = [
     path: '/',
     loader: RootLoader,
     Component: BasicsLayout,
-    children: []
+    children: [],
   },
   {
     path: '/login',
     loader: LoginLoader,
     action: LoginAction,
-    Component: lazy(modules[getPath('login')])
+    Component: lazy(modules[getPath('login')]),
   },
   {
     // logout路由只用来退出登录，不展示页面
     path: '/logout',
     action: LogoutAction,
-    Component: lazy(modules[getPath('error')])
+    Component: lazy(modules[getPath('error')]),
   },
   {
     path: '*',
-    Component: lazy(modules[getPath('error')])
-  }
+    Component: lazy(modules[getPath('error')]),
+  },
 ];
 
 export default routes;
