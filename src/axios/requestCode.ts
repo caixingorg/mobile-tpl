@@ -1,39 +1,34 @@
 /*
- * @Author: flynn * @Date: 2023-04-03 14:33:53
- * @LastEditors: flynn
- * @LastEditTime: 2024-04-30 14:44:03
- * @description: 统一处理报错
+ * 统一处理报错
  */
 import type { AxiosResponse } from 'axios';
+import { Toast } from 'antd-mobile';
 import { useAppStore } from '@/store';
 import router from '@/router';
 
-/** 不需要token的接口列表 */
+/** 不需要 token 的接口列表 */
 const noTokenUrl: string[] = ['app/main/getToken'];
 /** 报错需要跳转降级页的状态码 -500 */
 const to404Url: number[] = [];
 
 /**
  * 统一处理报错
- * @param {AxiosResponse} response 请求响应参数
+ * @param response 请求响应参数
  */
 export default (response: AxiosResponse): void => {
-  const code: number = response.data.code,
-    url: string = response.config.url as string;
+  const code: number = response.data.code;
+  const url: string = response.config.url ?? '';
 
-  if (code === 200) {
-    // 正常
-  } else if (code === 401 && !noTokenUrl.includes(url)) {
-    // 401未登录
-    console.log('登陆失败err:>> ', url);
-    // 清除token
+  if (code === 401 && !noTokenUrl.includes(url)) {
+    // 401 未登录
     useAppStore.getState().REMOVE_TOKEN();
+    Toast.show({ icon: 'fail', content: '登录已过期，请重新登录' });
     router.navigate('/login', { replace: true });
   } else if (to404Url.includes(code)) {
     // 跳降级页
     window.location.href = '/404';
-  } else {
-    // console.log('请求失败err:>> ', response.data);
-    // message.error(response.data.msg)
+  } else if (code !== 200) {
+    // 其他错误
+    Toast.show({ icon: 'fail', content: response.data.msg || '请求失败' });
   }
 };

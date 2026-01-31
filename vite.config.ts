@@ -129,8 +129,12 @@ export default defineConfig(({ mode }) => {
       port: 7788,
       host: '0.0.0.0',
       open: false,
-      // https: false,
-      strictPort: false, // 为true若端口已被占用则会直接退出
+      strictPort: false,
+      headers: {
+        'X-Frame-Options': 'DENY',
+        'X-Content-Type-Options': 'nosniff',
+        'Referrer-Policy': 'strict-origin-when-cross-origin',
+      },
       proxy: {
         '/api': {
           target: env.VITE_APP_SERVE_URL,
