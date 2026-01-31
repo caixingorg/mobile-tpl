@@ -2,6 +2,7 @@
  * Axios 封装 - 简化版
  */
 import axios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
+import type { ApiResponse } from '@/types/api';
 import qs from 'qs';
 import { cancelRequest } from './requestCancel';
 import ErrorCodeHandle from './requestCode';
@@ -59,10 +60,10 @@ service.interceptors.response.use(
 // 简化的请求方法
 export const request = {
   get: <T>(url: string, params?: object) =>
-    service.get<Res.ResponseRes<T>>(url, { params }).then(res => res.data),
+    service.get<ApiResponse<T>>(url, { params }).then(res => res.data),
 
   post: <T>(url: string, data?: object) =>
-    service.post<Res.ResponseRes<T>>(url, data).then(res => res.data),
+    service.post<ApiResponse<T>>(url, data).then(res => res.data),
 
   postForm: <T>(url: string, params?: object) =>
     service
@@ -74,10 +75,10 @@ export const request = {
       .then(res => res.data),
 
   put: <T>(url: string, data?: object) =>
-    service.put<Res.ResponseRes<T>>(url, data).then(res => res.data),
+    service.put<ApiResponse<T>>(url, data).then(res => res.data),
 
   delete: <T>(url: string, params?: object) =>
-    service.delete<Res.ResponseRes<T>>(url, { params }).then(res => res.data),
+    service.delete<ApiResponse<T>>(url, { params }).then(res => res.data),
 };
 
 export default service;

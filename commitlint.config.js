@@ -16,6 +16,7 @@ export default {
         'revert',
         'build',
         'ci',
+        'type',
       ],
     ],
     'subject-full-stop': [0, 'never'],
