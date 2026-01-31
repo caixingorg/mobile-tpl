@@ -3,19 +3,19 @@
  * @Date: 2024-03-29 16:13:37
  * @description: login
  */
-import { useNavigate, useSearchParams, useSubmit } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { NavBar, Form, Input, Button, Space, Toast, SafeArea, Card, Divider } from 'antd-mobile';
 
 import { useState } from 'react';
 
-import { useSettings } from '@/store';
+import { useSettings, useAppStore } from '@/store';
 import styles from './index.module.css';
 
 function Login() {
   const [params] = useSearchParams();
   const navigate = useNavigate();
-  const submit = useSubmit();
   const { theme, SET_THEME } = useSettings();
+  const { SET_TOKEN } = useAppStore();
 
   const [visible, setVisible] = useState(false);
   const [form] = Form.useForm();
@@ -39,17 +39,28 @@ function Login() {
       // 验证表单
       await form.validateFields();
       setLoading(true);
+
       // 模拟登录请求
       setTimeout(() => {
         const token = 'test-tokentokentokentokentokentokentokentokentokentokentokentokentoken';
-        submit({ token, redirectTo: params.get('from') || '/' }, { method: 'post', replace: true });
+
+        // 保存 token 到 store
+        SET_TOKEN(token);
+
         Toast.show({
           icon: 'success',
           content: '登录成功',
         });
+
+        // 登录成功后跳转
+        const redirectTo = params.get('from') || '/';
+        navigate(redirectTo, { replace: true });
+
+        setLoading(false);
       }, 800);
     } catch (error) {
       console.error('表单验证失败:', error);
+      setLoading(false);
     }
   };
 
