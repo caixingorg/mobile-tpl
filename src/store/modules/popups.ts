@@ -1,7 +1,6 @@
 /*
- * @Author: dushuai
- * @Date: 2024-04-30 14:47:16
- * @LastEditors: dushuai
+  * @Author: flynn * @Date: 2024-04-30 14:47:16
+ * @LastEditors: flynn
  * @LastEditTime: 2024-04-30 15:56:23
  * @description: popups store
  */

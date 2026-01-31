@@ -1,7 +1,6 @@
 /*
- * @Author: dushuai
- * @Date: 2023-04-07 17:58:21
- * @LastEditors: dushuai
+  * @Author: flynn * @Date: 2023-04-07 17:58:21
+ * @LastEditors: flynn
  * @LastEditTime: 2023-04-07 17:58:33
  * @description: is类型推断
  */

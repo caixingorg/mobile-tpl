@@ -1,7 +1,6 @@
 /*
- * @Author: dushuai
- * @Date: 2024-04-12 11:02:43
- * @LastEditors: dushuai
+  * @Author: flynn * @Date: 2024-04-12 11:02:43
+ * @LastEditors: flynn
  * @LastEditTime: 2024-04-12 12:02:20
  * @description: 忽略vite的ts类型检查
  */

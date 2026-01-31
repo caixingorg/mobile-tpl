@@ -1,7 +1,6 @@
 /*
- * @Author: dushuai
- * @Date: 2024-04-18 12:28:06
- * @LastEditors: dushuai
+  * @Author: flynn * @Date: 2024-04-18 12:28:06
+ * @LastEditors: flynn
  * @LastEditTime: 2024-08-10 13:28:02
  * @description: 创建自定义store
  */
