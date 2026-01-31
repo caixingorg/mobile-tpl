@@ -1,10 +1,8 @@
 /*
- * @Author: flynn * @Date: 2023-03-15 14:44:06
- * @LastEditors: flynn
- * @LastEditTime: 2024-03-29 17:05:51
- * @description: api
+ * API 接口
  */
-import { get } from '@/axios';
+import { request } from '@/axios';
 
-/** 测试接口 */
-export const GetCaptcha = (params: unknown) => get<{ captchaImg: string }>('api/captcha', params);
+/** 测试接口 - 获取验证码 */
+export const getCaptcha = (params: { phone?: string }) =>
+  request.get<{ captchaImg: string; expireTime: number }>('/api/captcha', params);
