@@ -1,51 +1,138 @@
-.root {
-  max-width: 1280px;
-  margin: 0 auto;
-  /* padding: 20px; */
-  text-align: center;
-}
-.div {
-  width: 750px;
-  height: 100px;
-  background: red;
-}
-.token {
-  font-size: 32px;
-  line-height: 28px;
+.container {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  padding-bottom: 16px;
 }
 
-.logo {
-  height: 100px;
-  padding: 10px;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 20px #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 20px #61dafbaa);
+.navTitle {
+  font-size: 18px;
+  font-weight: bold;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.iconDefault {
+  font-size: 20px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.swiperWrapper {
+  padding: 0 12px;
+  margin-top: 8px;
 }
 
-.card {
-  padding: 20px;
+.swiperItem {
+  border-radius: 12px;
+  overflow: hidden;
 }
 
-.read-the-docs {
-  color: #888;
+.swiperSlide {
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.swiperSlide1 {
+  composes: swiperSlide;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.swiperSlide2 {
+  composes: swiperSlide;
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.swiperSlide3 {
+  composes: swiperSlide;
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.cardWrapper {
+  padding: 0 12px;
+  margin-top: 12px;
+}
+
+.userInfoWrapper {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.userAvatar {
+  --size: 56px;
+}
+
+.userInfoContent {
+  flex: 1;
+}
+
+.userName {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.userTagWrapper {
+  margin-top: 4px;
+}
+
+.userTag {
+  font-size: 12px;
+}
+
+.gridWrapper {
+  padding: 0 12px;
+  margin-top: 12px;
+}
+
+.gridBody {
+  padding: 16px 8px;
+}
+
+.gridItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.gridIcon {
+  font-size: 24px;
+  color: #666;
+}
+
+.gridText {
+  font-size: 13px;
+  color: #666;
+}
+
+.listWrapper {
+  padding: 0 12px;
+  margin-top: 12px;
+}
+
+.listPrefix {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 16px;
+}
+
+.listArrow {
+  color: #999;
+}
+
+.testButtonsWrapper {
+  padding: 0 12px;
+  margin-top: 12px;
+}
+
+.testButtonsContent {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }

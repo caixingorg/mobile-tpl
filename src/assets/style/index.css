@@ -1,83 +1,84 @@
+@import 'antd-mobile/es/global/global.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* 
+ * 移动端适配方案：vw/vh
+ * 设计稿基准：375px（iPhone 标准宽度）
+ * 使用 postcss-px-to-viewport 自动转换 px -> vw
+ * 公式：vw = (px / 375) * 100
+ */
+
 html {
-  font-size: calc((100vw / 750) * 100);
   width: 100%;
   height: 100%;
   color: #000;
   background: transparent;
-  font-family: '微软雅黑', 'Microsoft YaHei', Tahoma, Arial, sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
   width: 100%;
   height: 100%;
-  /* overflow: hidden; */
   -webkit-font-smoothing: antialiased;
   -webkit-overflow-scrolling: touch;
+  /* 限制最大宽度，大屏手机居中显示 */
+  max-width: 480px;
+  margin: 0 auto;
+  background-color: #f5f5f5;
 }
 
 #root {
   width: 100%;
-  height: 100%;
-  font-size: 24px;
+  min-height: 100%;
   overflow-x: hidden;
-  overflow-y: auto;
-}
-
-/**
-* 设置默认滚动条样式
-*/
-/* ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-} */
-/* ::-webkit-scrollbar-track { */
-/* background-color: #f5f5f5; */
-/* } */
-/* ::-webkit-scrollbar-track-piece {
   background-color: #f5f5f5;
-  border-radius: 6px;
-} */
-/* ::-webkit-scrollbar-thumb {
-  background-color: #cccccc;
-  border-radius: 12px;
-} */
-/* ::-webkit-scrollbar-corner {
-  background-color: #f5f5f5;
-} */
-/* ::-webkit-resizer {
-  background-repeat: no-repeat;
-  background-position: bottom right;
-} */
-
-.scrollbar-custom {
-  overflow-y: scroll;
-}
-.scrollbar-custom::-webkit-scrollbar {
-  width: 3px;
-  background-color: transparent;
-}
-.scrollbar-custom::-webkit-scrollbar-thumb {
-  background-color: #ddd;
-  border-radius: 12px;
 }
 
-.scrollbar-none {
-  overflow-y: scroll;
+/* 1px 边框解决方案 */
+.hairline {
+  position: relative;
 }
-.scrollbar-none::-webkit-scrollbar {
-  width: 0px;
-  opacity: 0;
+
+.hairline::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background-color: #e5e5e5;
+  transform: scaleY(0.5);
+  transform-origin: bottom;
+}
+
+/* 隐藏滚动条但保留滚动功能 */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
   display: none;
-  width: 0;
-  height: 0;
-  color: transparent !important;
 }
 
-/* 重写antd-m 弹窗样式 */
+/* 安全区域适配（刘海屏） */
+.safe-area-top {
+  padding-top: constant(safe-area-inset-top);
+  padding-top: env(safe-area-inset-top);
+}
+
+.safe-area-bottom {
+  padding-bottom: constant(safe-area-inset-bottom);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* 重写 antd-mobile 弹窗样式 */
 .adm-center-popup-wrap {
   width: 100% !important;
   max-width: 100% !important;

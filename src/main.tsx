@@ -6,7 +6,6 @@
  */
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-// import 'amfe-flexible'
 
 import App from './App';
 

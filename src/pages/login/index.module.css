@@ -1,0 +1,107 @@
+.container {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+.formWrapper {
+  padding: 16px;
+  padding-top: 32px;
+}
+
+.logoSection {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.logoBox {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 16px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #3b82f6 0%, #9333ea 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.logoText {
+  font-size: 28px;
+  color: #fff;
+  font-weight: bold;
+}
+
+.welcomeTitle {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.welcomeSubtitle {
+  font-size: 14px;
+  color: #999;
+}
+
+.queryCard {
+  margin-bottom: 16px;
+}
+
+.queryText {
+  font-size: 14px;
+  color: #666;
+}
+
+.queryValue {
+  font-family: monospace;
+  color: #3b82f6;
+}
+
+.loginButton {
+  margin-top: 16px;
+}
+
+.iconDefault {
+  color: #999;
+}
+
+.socialLoginSection {
+  margin-top: 24px;
+}
+
+.socialButton {
+  width: 48px;
+  height: 48px;
+  color: #fff;
+}
+
+.socialButtonWechat {
+  composes: socialButton;
+  background-color: #07c160;
+}
+
+.socialButtonQQ {
+  composes: socialButton;
+  background-color: #1677ff;
+}
+
+.socialButtonPhone {
+  composes: socialButton;
+  background-color: #ff6b6b;
+}
+
+.footerSection {
+  margin-top: 32px;
+  text-align: center;
+}
+
+.footerButtonDefault {
+  color: #999;
+}
+
+.footerButtonPrimary {
+  color: #3b82f6;
+}
+
+.passwordToggle {
+  margin-top: 8px;
+}

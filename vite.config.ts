@@ -4,7 +4,7 @@ import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react-swc';
 import svgr from 'vite-plugin-svgr';
 import Autoprefixer from 'autoprefixer';
-import PostCssPxToRem from 'postcss-pxtorem';
+import PostCssPxToViewport from 'postcss-px-to-viewport';
 import Tailwindcss from 'tailwindcss';
 
 // https://vitejs.dev/config/
@@ -152,17 +152,19 @@ export default defineConfig(({ mode }) => {
             overrideBrowserslist: ['Android 4.1', 'iOS 7.1', 'Chrome > 31', 'ff > 31', 'ie >= 8'],
           }),
 
-          PostCssPxToRem({
-            rootValue: 100, // 基准值 设计稿的宽度/10  // 75=750
-            // rootValue({ file }) {
-            //   // 项目中使用的 antd官方社区的 antd-mobile 组件库。这里做了区分，如果样式文件命中有 antd-mobile 则以 375 样稿转化。这里不做区分，那么 antd-mobile 各组件样式会变形。
-            //   return file.indexOf('antd-mobile') !== -1 ? 37.5 : 75
-            // },
-            unitPrecision: 5, //保留rem小数点多少位
-            propList: ['*'], // 需要转换的属性，这里选择全部都进行转换
-            selectorBlackList: ['norem'], // 忽略转换正则匹配的属性  // norem-开头的class，不进行rem转换
-            // minPixelValue: 0, // 设置要替换的最小像素值(3px会被转rem)。 默认 0
-            exclude: /node_modules/i, // node_modules目录下的文件，不进行rem转换
+          PostCssPxToViewport({
+            unitToConvert: 'px', // 要转换的单位
+            viewportWidth: 375, // 设计稿宽度（现在主流是 375px 基准）
+            unitPrecision: 5, // 精度
+            propList: ['*'], // 转换所有属性
+            viewportUnit: 'vw', // 转换为 vw
+            fontViewportUnit: 'vw', // 字体转换为 vw
+            selectorBlackList: ['.ignore', '.hairlines', 'adm-'], // 忽略的类名
+            minPixelValue: 1, // 最小转换值
+            mediaQuery: false, // 不转换媒体查询
+            replace: true, // 直接替换原值
+            exclude: /node_modules/i, // 不转换 node_modules
+            landscape: false, // 不处理横屏
           }),
 
           Tailwindcss(),

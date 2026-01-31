@@ -6,28 +6,30 @@
 
 ### 技术栈
 
-| 类别 | 技术 | 版本 |
-|------|------|------|
-| 框架 | React | 18.2.0 |
-| 语言 | TypeScript | 5.2.2 |
-| 构建工具 | Vite | 5.2.0 |
-| 路由 | React Router DOM | 6.22.3 |
-| 状态管理 | Zustand | 4.5.2 |
-| UI 组件库 | Ant Design Mobile | 5.35.0 |
-| HTTP 客户端 | Axios | 1.6.8 |
-| CSS 框架 | Tailwind CSS | 3.4.3 |
-| 工具库 | ahooks / lodash-es | 3.8.0 / 4.17.21 |
+| 类别        | 技术               | 版本            |
+| ----------- | ------------------ | --------------- |
+| 框架        | React              | 18.2.0          |
+| 语言        | TypeScript         | 5.2.2           |
+| 构建工具    | Vite               | 5.2.0           |
+| 路由        | React Router DOM   | 6.22.3          |
+| 状态管理    | Zustand            | 4.5.2           |
+| UI 组件库   | Ant Design Mobile  | 5.35.0          |
+| HTTP 客户端 | Axios              | 1.6.8           |
+| CSS 框架    | Tailwind CSS       | 3.4.3           |
+| 工具库      | ahooks / lodash-es | 3.8.0 / 4.17.21 |
 
 ---
 
 ## ✅ 项目优势
 
 ### 1. 技术选型合理
+
 - 使用 React 18 + Vite，开发体验和构建性能优秀
 - 采用 Zustand 作为状态管理方案，轻量、简洁、无样板代码
 - React Router v6 充分利用 Loader/Action 模式，权限控制设计合理
 
 ### 2. 项目结构清晰
+
 ```
 src/
 ├── api/           # API 接口层
@@ -44,16 +46,19 @@ src/
 ```
 
 ### 3. 状态管理设计良好
+
 - 使用 `createCustomStore` 封装 Zustand，统一处理持久化和版本迁移
 - 实现了自定义的 `useSelector` 优化渲染性能
 - Store 模块划分合理（app/settings/permission/popups）
 
 ### 4. 动态路由支持
+
 - 支持基于配置文件的动态路由生成
 - 支持嵌套路由和权限控制
 - 路由懒加载优化首屏性能
 
 ### 5. 代码规范
+
 - 配置了 ESLint + TypeScript 规则
 - 使用 CSS Modules + Tailwind 混合样式方案
 
@@ -64,15 +69,18 @@ src/
 ### 一、代码质量问题
 
 #### 1.1 ESLint 配置过于复杂
+
 **问题描述：**
 `.eslintrc.cjs` 文件长达 539 行，包含大量自定义规则，维护成本高。
 
 **影响：**
+
 - 新成员上手困难
 - 规则冲突难以排查
 - 升级维护成本高
 
 **建议：**
+
 ```javascript
 // 推荐使用预设配置，减少自定义规则
 module.exports = {
@@ -84,13 +92,14 @@ module.exports = {
     'plugin:react-hooks/recommended',
     'plugin:react/recommended',
     'plugin:react/jsx-runtime', // React 17+ 不需要 import React
-    'prettier' // 放到最后，关闭与 Prettier 冲突的规则
+    'prettier', // 放到最后，关闭与 Prettier 冲突的规则
   ],
   // 精简自定义规则...
 };
 ```
 
 #### 1.2 代码注释头冗余
+
 **问题描述：**
 每个文件顶部都有冗长的注释头，包含作者、日期等信息。
 
@@ -105,6 +114,7 @@ module.exports = {
 ```
 
 **影响：**
+
 - Git 已经记录了作者和修改历史，重复信息
 - 文件头部臃肿
 - 修改代码后需要手动更新注释，容易遗漏
@@ -113,12 +123,15 @@ module.exports = {
 移除文件头注释，重要信息通过代码本身或 JSDoc 表达。
 
 #### 1.3 命名规范不统一
+
 **问题描述：**
+
 - 文件夹命名：`home` vs `Popups`（小写 vs 大驼峰）
 - 函数命名：`popShow` vs `handleClick`（动词位置不一致）
 
 **建议：**
 制定统一的命名规范：
+
 - 文件夹：kebab-case（如 `popups`, `error-pages`）
 - 组件文件：PascalCase（如 `PopTest.tsx`）
 - 工具函数：camelCase，动词开头（如 `showPopup`, `handleClick`）
@@ -128,7 +141,9 @@ module.exports = {
 ### 二、类型安全问题
 
 #### 2.1 过度使用 `any` 和 `unknown`
+
 **问题代码：**
+
 ```typescript
 // src/axios/index.ts
 export function post<T = unknown>(url: string, params?: unknown) {
@@ -136,16 +151,17 @@ export function post<T = unknown>(url: string, params?: unknown) {
 }
 
 // src/api/api.ts
-export const GetCaptcha = (params: unknown) => 
-  get<{ captchaImg: string }>('api/captcha', params);
+export const GetCaptcha = (params: unknown) => get<{ captchaImg: string }>('api/captcha', params);
 ```
 
 **影响：**
+
 - 失去 TypeScript 类型保护
 - 调用时无法获得智能提示
 - 潜在的类型错误难以发现
 
 **建议：**
+
 ```typescript
 // 定义明确的请求参数类型
 interface CaptchaParams {
@@ -158,16 +174,17 @@ interface CaptchaResponse {
   expireTime: number;
 }
 
-export const getCaptcha = (params: CaptchaParams) => 
-  get<CaptchaResponse>('/api/captcha', params);
+export const getCaptcha = (params: CaptchaParams) => get<CaptchaResponse>('/api/captcha', params);
 ```
 
 #### 2.2 类型定义分散
+
 **问题描述：**
 类型定义分布在 `src/typings/`、`src/common/` 和各组件文件中。
 
 **建议：**
 建立统一的类型管理策略：
+
 ```
 src/types/
 ├── api/           # 接口相关类型
@@ -181,49 +198,64 @@ src/types/
 ### 三、架构设计问题
 
 #### 3.1 Axios 封装冗余
+
 **问题代码：**
+
 ```typescript
 // 每个方法都重复包装 Promise
 export function post<T = unknown>(url: string, params?: unknown) {
   return new Promise<R<T>>((resolve, reject) => {
     service
-      .post<R<T>>(url, qs.stringify(params), { /* config */ })
+      .post<R<T>>(url, qs.stringify(params), {
+        /* config */
+      })
       .then(
-        (response) => { response && resolve(response.data); },
-        (err: AxiosError) => { reject(err); }
+        response => {
+          response && resolve(response.data);
+        },
+        (err: AxiosError) => {
+          reject(err);
+        }
       )
-      .catch((err: AxiosError) => { reject(err); });
+      .catch((err: AxiosError) => {
+        reject(err);
+      });
   });
 }
 ```
 
 **问题：**
+
 - Axios 本身返回 Promise，无需额外包装
 - `.then(onResolved, onRejected)` 和 `.catch` 重复处理错误
 
 **建议：**
+
 ```typescript
 // 简化封装
 export const request = {
-  get: <T>(url: string, params?: object) => 
+  get: <T>(url: string, params?: object) =>
     service.get<Res.R<T>>(url, { params }).then(res => res.data),
-  
-  post: <T>(url: string, data?: object) => 
-    service.post<Res.R<T>>(url, data).then(res => res.data),
-  
+
+  post: <T>(url: string, data?: object) => service.post<Res.R<T>>(url, data).then(res => res.data),
+
   // 表单提交
-  postForm: <T>(url: string, params?: object) => 
-    service.post<Res.R<T>>(url, qs.stringify(params), {
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-    }).then(res => res.data),
+  postForm: <T>(url: string, params?: object) =>
+    service
+      .post<Res.R<T>>(url, qs.stringify(params), {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      })
+      .then(res => res.data),
 };
 ```
 
 #### 3.2 弹窗管理机制复杂
+
 **问题描述：**
 弹窗管理引入了 Map 序列化/反序列化，增加了不必要的复杂度。
 
 **问题代码：**
+
 ```typescript
 // src/store/modules/popups.ts
 export const usePopupStore = createCustomStore<Store, Actions>(
@@ -242,6 +274,7 @@ export const setList = (list: MapList) => deserializerMap<List>(list);
 
 **建议：**
 弹窗状态通常是瞬时的，不需要持久化到 storage。考虑简化：
+
 ```typescript
 // 使用简单的全局状态管理
 interface PopupState {
@@ -249,19 +282,21 @@ interface PopupState {
   data?: unknown;
 }
 
-const usePopupStore = create<PopupState>((set) => ({
+const usePopupStore = create<PopupState>(set => ({
   visible: false,
-  open: (data) => set({ visible: true, data }),
+  open: data => set({ visible: true, data }),
   close: () => set({ visible: false, data: undefined }),
 }));
 ```
 
 #### 3.3 路由与权限耦合
+
 **问题描述：**
 `permission.ts` store 既管理路由状态，又处理路由生成逻辑。
 
 **建议：**
 分离关注点：
+
 ```typescript
 // services/routeService.ts - 纯路由生成逻辑
 export function generateRoutes(dynamicRoutes: App.Route[]): RouteObject[] {
@@ -271,7 +306,7 @@ export function generateRoutes(dynamicRoutes: App.Route[]): RouteObject[] {
 // store/permission.ts - 只管理状态
 export const usePermissionStore = create(() => ({
   routes: [],
-  setRoutes: (routes) => set({ routes }),
+  setRoutes: routes => set({ routes }),
 }));
 ```
 
@@ -280,7 +315,9 @@ export const usePermissionStore = create(() => ({
 ### 四、性能问题
 
 #### 4.1 useSelector 实现问题
+
 **问题代码：**
+
 ```typescript
 // src/store/useSelector.ts
 export function useSelector<T extends object, K extends keyof T>(
@@ -299,29 +336,35 @@ export function useSelector<T extends object, K extends keyof T>(
 ```
 
 **问题：**
+
 - 使用 `useRef` 缓存，可能导致闭包问题
 - `shallow` 比较在复杂对象上性能不佳
 
 **建议：**
 直接使用 Zustand 官方推荐的方案：
+
 ```typescript
 // 方案1：多个 selector
-const name = useStore((state) => state.name);
-const age = useStore((state) => state.age);
+const name = useStore(state => state.name);
+const age = useStore(state => state.age);
 
 // 方案2：使用 useShallow（Zustand 提供）
 import { useShallow } from 'zustand/react/shallow';
-const { name, age } = useStore(useShallow((state) => ({ 
-  name: state.name, 
-  age: state.age 
-})));
+const { name, age } = useStore(
+  useShallow(state => ({
+    name: state.name,
+    age: state.age,
+  }))
+);
 ```
 
 #### 4.2 动态路由加载策略
+
 **问题：**
 应用启动时立即加载所有路由配置，未实现真正的按需加载。
 
 **建议：**
+
 - 实现基于用户权限的懒加载
 - 考虑使用 `React.lazy` + `Suspense` 延迟加载非首屏路由
 
@@ -330,13 +373,14 @@ const { name, age } = useStore(useShallow((state) => ({
 ### 五、工程化问题
 
 #### 5.1 缺少关键配置文件
-| 配置 | 状态 | 影响 |
-|------|------|------|
-| Prettier | ❌ 缺失 | 代码格式化不统一 |
-| Husky | ❌ 缺失 | 无法做 Git 钩子检查 |
+
+| 配置        | 状态    | 影响                 |
+| ----------- | ------- | -------------------- |
+| Prettier    | ❌ 缺失 | 代码格式化不统一     |
+| Husky       | ❌ 缺失 | 无法做 Git 钩子检查  |
 | lint-staged | ❌ 缺失 | 无法对暂存文件做检查 |
-| commitlint | ❌ 缺失 | 提交信息不规范 |
-| Vitest/Jest | ❌ 缺失 | 无单元测试 |
+| commitlint  | ❌ 缺失 | 提交信息不规范       |
+| Vitest/Jest | ❌ 缺失 | 无单元测试           |
 
 **建议配置：**
 
@@ -368,13 +412,16 @@ npx lint-staged
 ```
 
 #### 5.2 环境变量问题
+
 **问题：**
+
 ```
 VITE_APP_SERVE_URl  // 拼写错误，应为 VITE_APP_SERVE_URL
 ```
 
 **建议：**
 统一环境变量命名规范，添加前缀注释：
+
 ```env
 # === 环境配置 ===
 VITE_NODE_ENV=development
@@ -393,17 +440,21 @@ VITE_APP_SERVE_URL=/
 ### 六、安全问题
 
 #### 6.1 Token 存储
+
 **问题：**
 Token 存储在 `sessionStorage` 中，存在 XSS 攻击风险。
 
 **建议：**
+
 - 评估是否需要持久化存储
 - 考虑使用 httpOnly Cookie（更安全）
 - 如果必须使用 storage，添加 XSS 防护
 
 #### 6.2 缺少安全头部配置
+
 **建议：**
 在 Vite 配置中添加安全相关头部：
+
 ```typescript
 // vite.config.ts
 server: {
@@ -420,7 +471,9 @@ server: {
 ### 七、用户体验问题
 
 #### 7.1 错误处理不完善
+
 **问题代码：**
+
 ```typescript
 // src/axios/requestCode.ts
 } else {
@@ -431,6 +484,7 @@ server: {
 
 **建议：**
 实现统一的错误提示机制：
+
 ```typescript
 // utils/toast.ts
 import { Toast } from 'antd-mobile';
@@ -446,10 +500,12 @@ export function showError(message: string) {
 ```
 
 #### 7.2 加载状态管理
+
 **问题：**
 缺少全局 loading 状态管理。
 
 **建议：**
+
 ```typescript
 // store/modules/loading.ts
 interface LoadingState {
@@ -525,16 +581,16 @@ export const useLoadingStore = create<LoadingState>(() => ({
 
 ## 📊 优先级矩阵
 
-| 问题 | 严重程度 | 修复难度 | 优先级 |
-|------|----------|----------|--------|
-| ESLint 配置复杂 | 中 | 低 | P1 |
-| 类型使用不当 | 高 | 中 | P1 |
-| 拼写错误 | 低 | 低 | P1 |
-| Axios 封装冗余 | 中 | 低 | P2 |
-| 缺少工程化配置 | 中 | 低 | P2 |
-| 弹窗管理复杂 | 中 | 中 | P3 |
-| useSelector 问题 | 中 | 低 | P2 |
-| 安全问题 | 高 | 中 | P1 |
+| 问题             | 严重程度 | 修复难度 | 优先级 |
+| ---------------- | -------- | -------- | ------ |
+| ESLint 配置复杂  | 中       | 低       | P1     |
+| 类型使用不当     | 高       | 中       | P1     |
+| 拼写错误         | 低       | 低       | P1     |
+| Axios 封装冗余   | 中       | 低       | P2     |
+| 缺少工程化配置   | 中       | 低       | P2     |
+| 弹窗管理复杂     | 中       | 中       | P3     |
+| useSelector 问题 | 中       | 低       | P2     |
+| 安全问题         | 高       | 中       | P1     |
 
 ---
 

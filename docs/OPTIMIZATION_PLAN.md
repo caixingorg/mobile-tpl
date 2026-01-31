@@ -3,6 +3,7 @@
 ## 📋 计划概述
 
 本计划采用**增量式优化策略**，将优化任务分为 5 个阶段，每个阶段：
+
 - ✅ 独立可验证
 - ✅ 可随时回滚
 - ✅ 有明确的检查点
@@ -83,6 +84,7 @@ git reset --hard HEAD@{n}  # 回滚到指定版本
 ## 阶段 1: 工程化基础建设
 
 ### 目标
+
 建立完整的工程化基础设施，为后续优化奠定基础。
 
 ### 任务清单
@@ -176,16 +178,9 @@ npx --no-install commitlint --edit "$1"
 ```json
 {
   "lint-staged": {
-    "*.{ts,tsx}": [
-      "eslint --fix --max-warnings 0",
-      "prettier --write"
-    ],
-    "*.{css,less,scss}": [
-      "prettier --write"
-    ],
-    "*.{json,md}": [
-      "prettier --write"
-    ]
+    "*.{ts,tsx}": ["eslint --fix --max-warnings 0", "prettier --write"],
+    "*.{css,less,scss}": ["prettier --write"],
+    "*.{json,md}": ["prettier --write"]
   }
 }
 ```
@@ -206,17 +201,17 @@ export default {
       2,
       'always',
       [
-        'feat',     // 新功能
-        'fix',      // 修复
-        'docs',     // 文档
-        'style',    // 格式（不影响代码运行的变动）
+        'feat', // 新功能
+        'fix', // 修复
+        'docs', // 文档
+        'style', // 格式（不影响代码运行的变动）
         'refactor', // 重构
-        'perf',     // 性能优化
-        'test',     // 测试
-        'chore',    // 构建过程或辅助工具的变动
-        'revert',   // 回滚
-        'build',    // 构建
-        'ci',       // CI配置
+        'perf', // 性能优化
+        'test', // 测试
+        'chore', // 构建过程或辅助工具的变动
+        'revert', // 回滚
+        'build', // 构建
+        'ci', // CI配置
       ],
     ],
     'subject-full-stop': [0, 'never'],
@@ -277,6 +272,7 @@ git commit -m "test: verify husky works"
 ## 阶段 2: 代码规范与风格统一
 
 ### 目标
+
 统一代码风格，移除冗余代码，修复明显错误。
 
 ### 任务清单
@@ -284,6 +280,7 @@ git commit -m "test: verify husky works"
 #### 2.1 精简 ESLint 配置
 
 **备份原配置：**
+
 ```bash
 cp .eslintrc.cjs .eslintrc.cjs.bak
 ```
@@ -322,12 +319,9 @@ module.exports = {
   },
   rules: {
     // React
-    'react-refresh/only-export-components': [
-      'warn',
-      { allowConstantExport: true },
-    ],
+    'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
     'react/prop-types': 'off',
-    
+
     // TypeScript
     '@typescript-eslint/no-explicit-any': 'off', // 阶段 5 再处理
     '@typescript-eslint/no-unused-vars': [
@@ -339,16 +333,16 @@ module.exports = {
         ignoreRestSiblings: true,
       },
     ],
-    
+
     // 基础规则
     'no-console': 'off', // 允许 console，但生产环境会移除
     'no-debugger': 'error',
     'no-unused-vars': 'off', // 使用 TS 规则
-    
+
     // 风格规则（主要由 Prettier 处理）
-    'quotes': 'off',
-    'semi': 'off',
-    'indent': 'off',
+    quotes: 'off',
+    semi: 'off',
+    indent: 'off',
   },
 };
 ```
@@ -382,6 +376,7 @@ pnpm run lint:fix
 #### 2.4 统一文件命名
 
 **重命名文件夹：**
+
 ```bash
 # 组件文件夹统一使用 PascalCase
 mv src/components/Popups src/components/popups
@@ -389,6 +384,7 @@ mv src/components/Test src/components/test
 ```
 
 **更新引用：**
+
 ```typescript
 // 修改所有导入路径
 import PopTest from '@/components/popups/PopTest';
@@ -417,6 +413,7 @@ pnpm run dev
 ## 阶段 3: 核心架构简化
 
 ### 目标
+
 简化过度设计的模块，提升代码可维护性。
 
 ### 任务清单
@@ -424,6 +421,7 @@ pnpm run dev
 #### 3.1 简化 Axios 封装
 
 **备份：**
+
 ```bash
 cp src/axios/index.ts src/axios/index.ts.bak
 ```
@@ -468,7 +466,7 @@ service.interceptors.response.use(
     const url = response.config.url ?? '';
     cancelRequest.removePending(response.config);
 
-    if (!whiteList.some((e) => url.match(e))) {
+    if (!whiteList.some(e => url.match(e))) {
       ErrorCodeHandle(response);
     }
 
@@ -492,10 +490,10 @@ service.interceptors.response.use(
 // 简化的请求方法
 export const request = {
   get: <T>(url: string, params?: object) =>
-    service.get<Res.ResponseRes<T>>(url, { params }).then((res) => res.data),
+    service.get<Res.ResponseRes<T>>(url, { params }).then(res => res.data),
 
   post: <T>(url: string, data?: object) =>
-    service.post<Res.ResponseRes<T>>(url, data).then((res) => res.data),
+    service.post<Res.ResponseRes<T>>(url, data).then(res => res.data),
 
   postForm: <T>(url: string, params?: object) =>
     service
@@ -504,13 +502,13 @@ export const request = {
           'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
         },
       })
-      .then((res) => res.data),
+      .then(res => res.data),
 
   put: <T>(url: string, data?: object) =>
-    service.put<Res.ResponseRes<T>>(url, data).then((res) => res.data),
+    service.put<Res.ResponseRes<T>>(url, data).then(res => res.data),
 
   delete: <T>(url: string, params?: object) =>
-    service.delete<Res.ResponseRes<T>>(url, { params }).then((res) => res.data),
+    service.delete<Res.ResponseRes<T>>(url, { params }).then(res => res.data),
 };
 
 export default service;
@@ -551,7 +549,7 @@ export function useSelector<T extends object, K extends keyof T>(
   return useShallow((state: T) => {
     if (!fields) return state;
     const result = {} as Pick<T, K>;
-    fields.forEach((key) => {
+    fields.forEach(key => {
       result[key] = state[key];
     });
     return result;
@@ -560,6 +558,7 @@ export function useSelector<T extends object, K extends keyof T>(
 ```
 
 **安装依赖：**
+
 ```bash
 pnpm add zustand  # 确保版本支持 useShallow
 ```
@@ -596,14 +595,14 @@ const initialState: Record<PopupNames, PopupState> = {
   [PopupNames.PopTestTwo]: { visible: false },
 };
 
-export const usePopupSimple = create<PopupStore>((set) => ({
+export const usePopupSimple = create<PopupStore>(set => ({
   popups: initialState,
   open: (name, data) =>
-    set((state) => ({
+    set(state => ({
       popups: { ...state.popups, [name]: { visible: true, data } },
     })),
-  close: (name) =>
-    set((state) => ({
+  close: name =>
+    set(state => ({
       popups: { ...state.popups, [name]: { visible: false } },
     })),
   closeAll: () => set({ popups: initialState }),
@@ -635,6 +634,7 @@ pnpm run dev
 ## 阶段 4: 性能与安全问题修复
 
 ### 目标
+
 修复性能隐患和安全问题。
 
 ### 任务清单
@@ -654,7 +654,7 @@ const { theme, SET_THEME } = useSettings(useSelector(['theme', 'SET_THEME']));
 // 修改后
 import { useShallow } from 'zustand/react/shallow';
 const { theme, SET_THEME } = useSettings(
-  useShallow((state) => ({ theme: state.theme, SET_THEME: state.SET_THEME }))
+  useShallow(state => ({ theme: state.theme, SET_THEME: state.SET_THEME }))
 );
 ```
 
@@ -670,6 +670,7 @@ find src -name "*.tsx" -type f -exec sed -i '' 's/useSelector/useShallow/g' {} +
 #### 4.2 路由懒加载优化
 
 **现状分析：**
+
 - 当前已实现 React.lazy 动态导入
 - 可以进一步优化为按权限懒加载
 
@@ -761,12 +762,12 @@ interface LoadingState {
   setApiLoading: (key: string, loading: boolean) => void;
 }
 
-export const useLoadingStore = create<LoadingState>((set) => ({
+export const useLoadingStore = create<LoadingState>(set => ({
   global: false,
   apis: new Map(),
-  setGlobal: (loading) => set({ global: loading }),
+  setGlobal: loading => set({ global: loading }),
   setApiLoading: (key, loading) =>
-    set((state) => {
+    set(state => {
       const apis = new Map(state.apis);
       if (loading) {
         apis.set(key, true);
@@ -805,6 +806,7 @@ pnpm run dev
 ## 阶段 5: 类型安全完善
 
 ### 目标
+
 全面梳理和优化类型定义，消除 `any` 和 `unknown`。
 
 ### 任务清单
@@ -817,11 +819,13 @@ pnpm run dev
 # 类型规范
 
 ## 命名规范
+
 - 接口：PascalCase，以 I 开头（如 IUserInfo）
 - 类型别名：PascalCase（如 ApiResponse）
 - 枚举：PascalCase，成员大写下划线（如 ApiStatus）
 
 ## 目录结构
+
 - api/ - 接口请求/响应类型
 - store/ - 状态管理类型
 - components/ - 组件 Props 类型
@@ -893,7 +897,7 @@ import { ApiResponse } from '@/types/api/common';
 
 export const request = {
   get: <T>(url: string, params?: object) =>
-    service.get<ApiResponse<T>>(url, { params }).then((res) => res.data),
+    service.get<ApiResponse<T>>(url, { params }).then(res => res.data),
   // ...
 };
 ```
@@ -908,12 +912,10 @@ import type { LoginParams, LoginResponse } from '@/types/api/user';
 import type { ApiResponse } from '@/types/api/common';
 
 /** 登录接口 */
-export const login = (params: LoginParams) =>
-  request.post<LoginResponse>('/api/login', params);
+export const login = (params: LoginParams) => request.post<LoginResponse>('/api/login', params);
 
 /** 获取用户信息 */
-export const getUserInfo = () =>
-  request.get<LoginResponse>('/api/user/info');
+export const getUserInfo = () => request.get<LoginResponse>('/api/user/info');
 
 /** 测试接口 - 获取验证码 */
 export const getCaptcha = (params: { phone?: string }) =>
@@ -1028,27 +1030,32 @@ git push -f
 ## ✅ 最终检查清单
 
 ### 工程化
+
 - [ ] Prettier 配置生效
 - [ ] ESLint 配置精简
 - [ ] Husky 钩子正常
 - [ ] Commitlint 生效
 
 ### 代码质量
+
 - [ ] 无拼写错误
 - [ ] 文件命名统一
 - [ ] 代码格式一致
 
 ### 架构
+
 - [ ] Axios 封装简化
 - [ ] useSelector 优化
 - [ ] 类型定义完善
 
 ### 性能与安全
+
 - [ ] 错误处理完善
 - [ ] 安全头部配置
 - [ ] Loading 状态管理
 
 ### 类型安全
+
 - [ ] 无显式 any
 - [ ] API 类型完整
 - [ ] 组件 Props 类型完整
@@ -1057,13 +1064,13 @@ git push -f
 
 ## 📊 进度跟踪
 
-| 阶段 | 状态 | 开始日期 | 完成日期 | 负责人 |
-|------|------|----------|----------|--------|
-| 1. 工程化基础建设 | ⬜ 未开始 | - | - | - |
-| 2. 代码规范统一 | ⬜ 未开始 | - | - | - |
-| 3. 核心架构简化 | ⬜ 未开始 | - | - | - |
-| 4. 性能与安全 | ⬜ 未开始 | - | - | - |
-| 5. 类型安全完善 | ⬜ 未开始 | - | - | - |
+| 阶段              | 状态      | 开始日期 | 完成日期 | 负责人 |
+| ----------------- | --------- | -------- | -------- | ------ |
+| 1. 工程化基础建设 | ⬜ 未开始 | -        | -        | -      |
+| 2. 代码规范统一   | ⬜ 未开始 | -        | -        | -      |
+| 3. 核心架构简化   | ⬜ 未开始 | -        | -        | -      |
+| 4. 性能与安全     | ⬜ 未开始 | -        | -        | -      |
+| 5. 类型安全完善   | ⬜ 未开始 | -        | -        | -      |
 
 ---
 
