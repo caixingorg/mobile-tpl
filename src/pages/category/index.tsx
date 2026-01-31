@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import LazyImage from '@/components/LazyImage';
 import styles from './index.module.css';
 
 // 分类数据
@@ -122,7 +123,6 @@ const subCategories: Record<number, { name: string; image: string }[]> = {
 };
 
 export default function Category() {
-  const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState(1);
 
   const currentSubCategories = subCategories[activeCategory] || [];
@@ -146,7 +146,7 @@ export default function Category() {
       <div className={styles.content}>
         {/* Banner */}
         <div className={styles.banner}>
-          <img
+          <LazyImage
             src={`https://placehold.co/600x200/ff5000/white?text=${categories.find(c => c.id === activeCategory)?.name}`}
             alt="banner"
             className={styles.bannerImg}
@@ -157,17 +157,28 @@ export default function Category() {
         <div className={styles.subCategoryTitle}>热门分类</div>
         <div className={styles.subCategoryGrid}>
           {currentSubCategories.map((item, index) => (
-            <div
-              key={index}
-              className={styles.subCategoryItem}
-              onClick={() => navigate('/product/1')}
-            >
-              <img src={item.image} alt={item.name} className={styles.subCategoryImg} />
-              <span className={styles.subCategoryName}>{item.name}</span>
-            </div>
+            <SubCategoryItem key={index} item={item} />
           ))}
         </div>
       </div>
     </div>
   );
 }
+
+// 子分类项组件 - 使用 memo 优化
+interface SubCategory {
+  name: string;
+  image: string;
+}
+
+const SubCategoryItem = memo(({ item }: { item: SubCategory }) => {
+  const navigate = useNavigate();
+  return (
+    <div className={styles.subCategoryItem} onClick={() => navigate('/product/1')}>
+      <LazyImage src={item.image} alt={item.name} className={styles.subCategoryImg} />
+      <span className={styles.subCategoryName}>{item.name}</span>
+    </div>
+  );
+});
+
+SubCategoryItem.displayName = 'SubCategoryItem';

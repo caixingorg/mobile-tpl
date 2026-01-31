@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, memo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Toast } from 'antd-mobile';
 import { AppstoreOutline } from 'antd-mobile-icons';
+import LazyImage from '@/components/LazyImage';
 import styles from './index.module.css';
 
 // 购物车数据
@@ -34,6 +35,75 @@ const cartData = [
     checked: false,
   },
 ];
+
+// 购物车项组件 - 使用 memo 优化
+interface CartItemData {
+  id: number;
+  name: string;
+  spec: string;
+  price: number;
+  quantity: number;
+  image: string;
+  checked: boolean;
+}
+
+interface CartItemProps {
+  item: CartItemData;
+  isEdit: boolean;
+  onCheck: (id: number) => void;
+  onQuantityChange: (id: number, delta: number) => void;
+  onDelete: (id: number) => void;
+}
+
+const CartItem = memo(({ item, isEdit, onCheck, onQuantityChange, onDelete }: CartItemProps) => {
+  const handleCheck = useCallback(() => onCheck(item.id), [item.id, onCheck]);
+  const handleDelete = useCallback(() => onDelete(item.id), [item.id, onDelete]);
+  const handleDecrease = useCallback(
+    () => onQuantityChange(item.id, -1),
+    [item.id, onQuantityChange]
+  );
+  const handleIncrease = useCallback(
+    () => onQuantityChange(item.id, 1),
+    [item.id, onQuantityChange]
+  );
+
+  return (
+    <div className={styles.cartItem}>
+      <div
+        className={item.checked ? styles.checkboxChecked : styles.checkbox}
+        onClick={handleCheck}
+      />
+      <LazyImage src={item.image} alt={item.name} className={styles.productImage} />
+      <div className={styles.productInfo}>
+        <div className={styles.productName}>{item.name}</div>
+        <div className={styles.productSpec}>{item.spec}</div>
+        <div className={styles.productPriceRow}>
+          <span className={styles.productPrice}>¥{item.price}</span>
+          {isEdit ? (
+            <span
+              style={{ color: '#ff5000', fontSize: 13, cursor: 'pointer' }}
+              onClick={handleDelete}
+            >
+              删除
+            </span>
+          ) : (
+            <div className={styles.quantityControl}>
+              <button className={styles.quantityBtn} onClick={handleDecrease}>
+                -
+              </button>
+              <span className={styles.quantityValue}>{item.quantity}</span>
+              <button className={styles.quantityBtn} onClick={handleIncrease}>
+                +
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+});
+
+CartItem.displayName = 'CartItem';
 
 export default function Cart() {
   const navigate = useNavigate();
@@ -100,44 +170,14 @@ export default function Cart() {
 
       <div className={styles.cartList}>
         {cart.map(item => (
-          <div key={item.id} className={styles.cartItem}>
-            <div
-              className={item.checked ? styles.checkboxChecked : styles.checkbox}
-              onClick={() => handleCheck(item.id)}
-            />
-            <img src={item.image} alt={item.name} className={styles.productImage} />
-            <div className={styles.productInfo}>
-              <div className={styles.productName}>{item.name}</div>
-              <div className={styles.productSpec}>{item.spec}</div>
-              <div className={styles.productPriceRow}>
-                <span className={styles.productPrice}>¥{item.price}</span>
-                {isEdit ? (
-                  <span
-                    style={{ color: '#ff5000', fontSize: 13, cursor: 'pointer' }}
-                    onClick={() => handleDelete(item.id)}
-                  >
-                    删除
-                  </span>
-                ) : (
-                  <div className={styles.quantityControl}>
-                    <button
-                      className={styles.quantityBtn}
-                      onClick={() => handleQuantityChange(item.id, -1)}
-                    >
-                      -
-                    </button>
-                    <span className={styles.quantityValue}>{item.quantity}</span>
-                    <button
-                      className={styles.quantityBtn}
-                      onClick={() => handleQuantityChange(item.id, 1)}
-                    >
-                      +
-                    </button>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
+          <CartItem
+            key={item.id}
+            item={item}
+            isEdit={isEdit}
+            onCheck={handleCheck}
+            onQuantityChange={handleQuantityChange}
+            onDelete={handleDelete}
+          />
         ))}
       </div>
 

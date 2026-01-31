@@ -1,8 +1,9 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Swiper } from 'antd-mobile';
 import { LeftOutline, StarOutline, MessageOutline, AppstoreOutline } from 'antd-mobile-icons';
 import { throttle } from 'lodash-es';
+import LazyImage from '@/components/LazyImage';
 import styles from './index.module.css';
 
 // 模拟商品数据
@@ -92,7 +93,7 @@ export default function Product() {
         <Swiper loop>
           {productData.images.map((img, index) => (
             <Swiper.Item key={index}>
-              <img src={img} alt={`Product ${index + 1}`} className={styles.galleryImg} />
+              <LazyImage src={img} alt={`Product ${index + 1}`} className={styles.galleryImg} />
             </Swiper.Item>
           ))}
         </Swiper>
@@ -146,13 +147,7 @@ export default function Product() {
           <span className={styles.reviewMore}>查看全部 &gt;</span>
         </div>
         {productData.reviews.map(review => (
-          <div key={review.id} className={styles.reviewItem}>
-            <div className={styles.reviewUser}>
-              <img src={review.avatar} alt={review.username} className={styles.reviewAvatar} />
-              <span className={styles.reviewUsername}>{review.username}</span>
-            </div>
-            <div className={styles.reviewContent}>{review.content}</div>
-          </div>
+          <ReviewItem key={review.id} review={review} />
         ))}
       </div>
 
@@ -178,3 +173,24 @@ export default function Product() {
     </div>
   );
 }
+
+// 评价项组件 - 使用 memo 优化
+interface Review {
+  id: number;
+  username: string;
+  avatar: string;
+  rating: number;
+  content: string;
+}
+
+const ReviewItem = memo(({ review }: { review: Review }) => (
+  <div className={styles.reviewItem}>
+    <div className={styles.reviewUser}>
+      <LazyImage src={review.avatar} alt={review.username} className={styles.reviewAvatar} />
+      <span className={styles.reviewUsername}>{review.username}</span>
+    </div>
+    <div className={styles.reviewContent}>{review.content}</div>
+  </div>
+));
+
+ReviewItem.displayName = 'ReviewItem';

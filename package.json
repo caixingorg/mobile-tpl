@@ -27,6 +27,7 @@
     ]
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.90.20",
     "ahooks": "^3.8.0",
     "antd-mobile": "^5.35.0",
     "antd-mobile-icons": "^0.3.0",
@@ -41,6 +42,7 @@
   "devDependencies": {
     "@commitlint/cli": "^20.4.0",
     "@commitlint/config-conventional": "^20.4.0",
+    "@tanstack/react-query-devtools": "^5.91.3",
     "@types/lodash-es": "^4.17.12",
     "@types/node": "^20.11.30",
     "@types/postcss-pxtorem": "^6.0.3",

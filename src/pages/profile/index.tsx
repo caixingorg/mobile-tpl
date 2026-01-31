@@ -8,6 +8,7 @@ import {
   EnvironmentOutline,
   FileOutline,
 } from 'antd-mobile-icons';
+import LazyImage from '@/components/LazyImage';
 import styles from './index.module.css';
 
 // 订单类型
@@ -44,7 +45,7 @@ export default function Profile() {
       {/* 头部 */}
       <div className={styles.header}>
         <div className={styles.userInfo}>
-          <img
+          <LazyImage
             src="https://placehold.co/150x150/ff5000/white?text=User"
             alt="Avatar"
             className={styles.avatar}

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SearchOutline, FireFill } from 'antd-mobile-icons';
 import { Swiper } from 'antd-mobile';
+import LazyImage from '@/components/LazyImage';
 import styles from './index.module.css';
 
 // 分类数据
@@ -173,7 +174,7 @@ export default function Home() {
         <Swiper autoplay loop className={styles.bannerItem}>
           {[1, 2, 3].map(item => (
             <Swiper.Item key={item}>
-              <img
+              <LazyImage
                 src={`https://placehold.co/800x300/ff5000/white?text=Banner+${item}`}
                 alt={`Banner ${item}`}
                 className={styles.bannerImage}
@@ -219,7 +220,11 @@ export default function Home() {
               className={styles.flashProductItem}
               onClick={() => navigate(`/product/${product.id}`)}
             >
-              <img src={product.image} alt={product.name} className={styles.flashProductImg} />
+              <LazyImage
+                src={product.image}
+                alt={product.name}
+                className={styles.flashProductImg}
+              />
               <div className={styles.flashPrice}>¥{product.price}</div>
               <div className={styles.flashOriginalPrice}>¥{product.originalPrice}</div>
             </div>
@@ -235,33 +240,51 @@ export default function Home() {
         </div>
         <div className={styles.productGrid}>
           {products.map(product => (
-            <div
-              key={product.id}
-              className={styles.productCard}
-              onClick={() => navigate(`/product/${product.id}`)}
-            >
-              <img src={product.image} alt={product.title} className={styles.productImg} />
-              <div className={styles.productInfo}>
-                <div className={styles.productTitle}>{product.title}</div>
-                <div className={styles.productPriceRow}>
-                  <span className={styles.productPrice}>
-                    <span className={styles.productPricePrefix}>¥</span>
-                    {product.price}
-                  </span>
-                  <span className={styles.productSales}>已售{product.sales}</span>
-                </div>
-                <div className={styles.productTags}>
-                  {product.tags.map((tag, idx) => (
-                    <span key={idx} className={styles.productTag}>
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
+            <ProductCard key={product.id} product={product} />
           ))}
         </div>
       </div>
     </div>
   );
 }
+
+// 商品卡片组件 - 使用 memo 避免不必要的重渲染
+import { memo } from 'react';
+
+interface Product {
+  id: number;
+  title: string;
+  price: number;
+  sales: string;
+  image: string;
+  tags: string[];
+}
+
+const ProductCard = memo(({ product }: { product: Product }) => {
+  const navigate = useNavigate();
+
+  return (
+    <div className={styles.productCard} onClick={() => navigate(`/product/${product.id}`)}>
+      <LazyImage src={product.image} alt={product.title} className={styles.productImg} />
+      <div className={styles.productInfo}>
+        <div className={styles.productTitle}>{product.title}</div>
+        <div className={styles.productPriceRow}>
+          <span className={styles.productPrice}>
+            <span className={styles.productPricePrefix}>¥</span>
+            {product.price}
+          </span>
+          <span className={styles.productSales}>已售{product.sales}</span>
+        </div>
+        <div className={styles.productTags}>
+          {product.tags.map((tag, idx) => (
+            <span key={idx} className={styles.productTag}>
+              {tag}
+            </span>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+});
+
+ProductCard.displayName = 'ProductCard';
