@@ -1,0 +1,49 @@
+name: Code Quality Check
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  code-quality:
+    name: Code Quality
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check code formatting
+        run: pnpm run format:check
+
+      - name: Run ESLint
+        run: pnpm run lint
+
+      - name: Run TypeScript type check
+        run: pnpm run type-check
+
+      - name: Build project
+        run: pnpm run build
+
+      - name: Check bundle size
+        run: |
+          echo "📦 检查构建产物大小..."
+          du -sh dist/
+          echo ""
+          echo "📊 详细文件大小："
+          find dist -type f -name "*.js" -exec ls -lh {} \; | awk '{ print $9 ": " $5 }'

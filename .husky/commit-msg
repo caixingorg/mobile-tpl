@@ -1,2 +1,23 @@
+#!/bin/sh
 echo "📝 检查提交信息..."
+
 npx --no-install commitlint --edit "$1"
+
+if [ $? -ne 0 ]; then
+  echo ""
+  echo "❌ 提交信息格式不符合规范"
+  echo ""
+  echo "正确格式示例："
+  echo "  feat: 添加新功能"
+  echo "  fix: 修复bug"
+  echo "  docs: 更新文档"
+  echo "  style: 代码格式调整"
+  echo "  refactor: 代码重构"
+  echo "  perf: 性能优化"
+  echo "  test: 添加测试"
+  echo "  chore: 构建过程或辅助工具的变动"
+  echo ""
+  exit 1
+fi
+
+echo "✅ 提交信息检查通过"

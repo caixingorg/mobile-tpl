@@ -1,2 +1,16 @@
+#!/bin/sh
 echo "🔍 正在检查代码..."
+echo ""
+
+# 运行 lint-staged（ESLint + Prettier）
 npx lint-staged
+
+# 检查是否通过
+if [ $? -ne 0 ]; then
+  echo ""
+  echo "❌ 代码检查失败，请修复后重试"
+  exit 1
+fi
+
+echo ""
+echo "✅ 代码检查通过"

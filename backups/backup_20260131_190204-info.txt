@@ -1,6 +1,0 @@
-备份时间: 2026-01-31 19:02:04
-备份分支: backup/before-optimization-20260131_190204
-当前分支: optimization/2024-improvements
-Git Commit: f54992d55e52dafdf0e5bea5f740f4068fc7305c
-Git Message: docs: 添加项目优化分析文档和辅助脚本
-备份文件: backup_20260131_190204.tar.gz
