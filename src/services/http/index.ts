@@ -1,5 +1,5 @@
 /*
- * Axios 封装 - 简化版
+ * HTTP 请求封装
  */
 import axios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import type { ApiResponse } from '@/types/api';
@@ -67,7 +67,7 @@ export const request = {
 
   postForm: <T>(url: string, params?: object) =>
     service
-      .post<Res.ResponseRes<T>>(url, qs.stringify(params), {
+      .post<ApiResponse<T>>(url, qs.stringify(params), {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
         },

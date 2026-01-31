@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-import './assets/style/index.css';
+import './assets/styles/index.css';
 
 // 初始化主题
 const initTheme = () => {

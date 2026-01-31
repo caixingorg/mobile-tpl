@@ -1,5 +1,5 @@
 /*
- * @Author: dushuai
+ * @Author: flynn
  * @Date: 2024-03-29 16:13:37
  * @description: login
  */
@@ -39,7 +39,6 @@ function Login() {
       // 验证表单
       await form.validateFields();
       setLoading(true);
-
       // 模拟登录请求
       setTimeout(() => {
         const token = 'test-tokentokentokentokentokentokentokentokentokentokentokentokentoken';
