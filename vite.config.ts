@@ -3,6 +3,8 @@ import { resolve } from 'path';
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react-swc';
 import svgr from 'vite-plugin-svgr';
+import { visualizer } from 'rollup-plugin-visualizer';
+import { compression } from 'vite-plugin-compression2';
 import Autoprefixer from 'autoprefixer';
 import PostCssPxToViewport from 'postcss-px-to-viewport';
 import Tailwindcss from 'tailwindcss';
@@ -84,10 +86,35 @@ export default defineConfig(({ mode }) => {
     }
   }
 
+  // 分析模式
+  const isAnalyze = mode === 'analyze';
+
   return {
     base: publicPath,
 
-    plugins: [react(), svgr()],
+    plugins: [
+      react(),
+      svgr(),
+      // Bundle 分析 - 仅在 analyze 模式启用
+      isAnalyze &&
+        visualizer({
+          open: true,
+          gzipSize: true,
+          brotliSize: true,
+          filename: 'dist/stats.html',
+        }),
+      // Gzip/Brotli 预压缩 - 生产环境启用
+      isProd &&
+        compression({
+          algorithm: 'gzip',
+          exclude: [/\.(br)$/, /\.(gz)$/],
+        }),
+      isProd &&
+        compression({
+          algorithm: 'brotliCompress',
+          exclude: [/\.(br)$/, /\.(gz)$/],
+        }),
+    ].filter(Boolean),
 
     build: {
       outDir: outputDir,

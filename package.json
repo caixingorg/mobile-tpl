@@ -9,6 +9,7 @@
     "build:sit": "tsc && vite build --mode sit",
     "build:prod": "tsc && vite build --mode production",
     "preview": "vite preview",
+    "analyze": "vite build --mode analyze",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives",
     "lint:fix": "eslint . --ext ts,tsx --fix",
     "format": "prettier --write \"src/**/*.{ts,tsx,css,less,json,md}\"",
@@ -64,9 +65,11 @@
     "postcss-px-to-viewport": "^1.1.1",
     "postcss-pxtorem": "^6.1.0",
     "prettier": "^3.8.1",
+    "rollup-plugin-visualizer": "^6.0.5",
     "tailwindcss": "^3.4.3",
     "typescript": "^5.2.2",
     "vite": "^5.2.0",
+    "vite-plugin-compression2": "^2.4.0",
     "vite-plugin-svgr": "^4.2.0"
   }
 }
