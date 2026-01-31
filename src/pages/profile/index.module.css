@@ -1,0 +1,243 @@
+.container {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  padding-bottom: 60px;
+}
+
+/* 头部背景 */
+.header {
+  background: linear-gradient(135deg, #ff5000 0%, #ff8a00 100%);
+  padding: 40px 16px 60px;
+  position: relative;
+}
+
+/* 用户信息 */
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.avatar {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  background-color: #fff;
+}
+
+.userMeta {
+  flex: 1;
+  color: #fff;
+}
+
+.username {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.userLevel {
+  font-size: 13px;
+  opacity: 0.9;
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 4px 12px;
+  border-radius: 12px;
+  display: inline-block;
+}
+
+.settingsBtn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* 订单卡片 */
+.orderCard {
+  background-color: #fff;
+  margin: -30px 12px 12px;
+  border-radius: 12px;
+  padding: 16px;
+  position: relative;
+  z-index: 2;
+}
+
+.orderHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.orderTitle {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+
+.orderMore {
+  font-size: 13px;
+  color: #999;
+}
+
+.orderTypes {
+  display: flex;
+  justify-content: space-around;
+}
+
+.orderType {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.orderTypeIcon {
+  font-size: 28px;
+  color: #666;
+  margin-bottom: 6px;
+}
+
+.orderTypeText {
+  font-size: 12px;
+  color: #666;
+}
+
+.badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background-color: #ff5000;
+  color: #fff;
+  font-size: 10px;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+}
+
+/* 功能菜单 */
+.menuSection {
+  background-color: #fff;
+  margin: 0 12px 12px;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.menuGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.menuItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+
+.menuIcon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+.menuText {
+  font-size: 12px;
+  color: #666;
+}
+
+/* 列表菜单 */
+.listMenu {
+  background-color: #fff;
+  margin: 0 12px 12px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.listItem {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  border-bottom: 1px solid #f5f5f5;
+  cursor: pointer;
+}
+
+.listItem:last-child {
+  border-bottom: none;
+}
+
+.listIcon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  margin-right: 12px;
+}
+
+.listContent {
+  flex: 1;
+  font-size: 15px;
+  color: #333;
+}
+
+.listArrow {
+  font-size: 14px;
+  color: #999;
+}
+
+/* 资产区域 */
+.assetSection {
+  background-color: #fff;
+  margin: 0 12px 12px;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.assetTitle {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 16px;
+}
+
+.assetGrid {
+  display: flex;
+  justify-content: space-around;
+}
+
+.assetItem {
+  text-align: center;
+}
+
+.assetValue {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.assetLabel {
+  font-size: 12px;
+  color: #999;
+}

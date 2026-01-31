@@ -1,15 +1,15 @@
-/*
- * @Author: flynn * @Date: 2024-03-29 12:30:24
- * @LastEditors: flynn
- * @LastEditTime: 2024-08-10 16:22:43
- * @description: main入口
- */
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-
 import App from './App';
-
 import './assets/style/index.css';
+
+// 初始化主题
+const initTheme = () => {
+  const savedTheme = sessionStorage.getItem('theme') || 'light';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+};
+
+initTheme();
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

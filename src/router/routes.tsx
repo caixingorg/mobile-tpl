@@ -1,58 +1,38 @@
-import { ComponentType, lazy } from 'react';
-import { RouteObject } from 'react-router-dom';
+import { lazy } from 'react';
+import type { RouteObject } from 'react-router-dom';
 
-import { LoginAction, LoginLoader, LogoutAction, RootLoader } from '@/permission';
-
-// eslint-disable-next-line react-refresh/only-export-components
 const BasicsLayout = lazy(() => import('@/layouts/basics'));
-
-type Module = {
-  [keys in string]: () => Promise<{ default: ComponentType<any> }>;
-};
-
-/** 所有pages下页面文件 */
-const pagesModules = import.meta.glob('@/pages/*/index.tsx') as unknown as Module;
-/** 所有pages\*\router下嵌套页面文件 */
-const nestModules = import.meta.glob('@/pages/*/router/*/index.tsx') as unknown as Module;
-/** 所有页面文件 */
-export const modules: Module = {
-  ...pagesModules,
-  ...nestModules,
-};
+const HomePage = lazy(() => import('@/pages/home'));
+const CategoryPage = lazy(() => import('@/pages/category'));
+const CartPage = lazy(() => import('@/pages/cart'));
+const ProfilePage = lazy(() => import('@/pages/profile'));
+const ProductPage = lazy(() => import('@/pages/product'));
+const LoginPage = lazy(() => import('@/pages/login'));
+const ErrorPage = lazy(() => import('@/pages/error'));
 
 const routes: RouteObject[] = [
   {
-    id: 'root',
     path: '/',
-    loader: RootLoader,
     Component: BasicsLayout,
-    children: [],
+    children: [
+      { index: true, Component: HomePage },
+      { path: 'category', Component: CategoryPage },
+      { path: 'cart', Component: CartPage },
+      { path: 'profile', Component: ProfilePage },
+    ],
+  },
+  {
+    path: '/product/:id',
+    Component: ProductPage,
   },
   {
     path: '/login',
-    loader: LoginLoader,
-    action: LoginAction,
-    Component: lazy(modules[getPath('login')]),
-  },
-  {
-    // logout路由只用来退出登录，不展示页面
-    path: '/logout',
-    action: LogoutAction,
-    Component: lazy(modules[getPath('error')]),
+    Component: LoginPage,
   },
   {
     path: '*',
-    Component: lazy(modules[getPath('error')]),
+    Component: ErrorPage,
   },
 ];
 
 export default routes;
-
-/**
- * 获取页面路径
- * @param name
- * @returns
- */
-export function getPath(name: string) {
-  return `/src/pages/${name}/index.tsx`;
-}
