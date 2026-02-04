@@ -7,7 +7,7 @@
 import { Link, useRouteError } from 'react-router-dom';
 
 export default function ErrorPage() {
-  const error: any = useRouteError();
+  const error = useRouteError() as Error & { statusText?: string };
   console.error(error);
 
   return (

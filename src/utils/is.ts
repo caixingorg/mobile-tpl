@@ -28,11 +28,11 @@ export function isObject<T extends object>(value: T | unknown): value is object 
   return Object.prototype.toString.call(value) === '[object Object]';
 }
 
-export function isArray<T extends any[]>(value: T | unknown): value is T {
+export function isArray<T extends unknown[]>(value: T | unknown): value is T {
   return Object.prototype.toString.call(value) === '[object Array]';
 }
 
-export function isFunction<T extends (...args: any[]) => any | void | never>(
+export function isFunction<T extends (...args: unknown[]) => unknown | void | never>(
   value: T | unknown
 ): value is T {
   return Object.prototype.toString.call(value) === '[object Function]';
@@ -46,15 +46,15 @@ export function isRegExp<T extends RegExp>(value: T | unknown): value is T {
   return Object.prototype.toString.call(value) === '[object RegExp]';
 }
 
-export function isPromise<T extends Promise<any>>(value: T | unknown): value is T {
+export function isPromise<T extends Promise<unknown>>(value: T | unknown): value is T {
   return Object.prototype.toString.call(value) === '[object Promise]';
 }
 
-export function isSet<T extends Set<any>>(value: T | unknown): value is T {
+export function isSet<T extends Set<unknown>>(value: T | unknown): value is T {
   return Object.prototype.toString.call(value) === '[object Set]';
 }
 
-export function isMap<T extends Map<any, any>>(value: T | unknown): value is T {
+export function isMap<T extends Map<unknown, unknown>>(value: T | unknown): value is T {
   return Object.prototype.toString.call(value) === '[object Map]';
 }
 

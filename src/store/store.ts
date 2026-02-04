@@ -5,7 +5,7 @@
  * @description: 创建自定义store
  */
 import { StoreKey } from '@/common';
-import { StoreApi, UseBoundStore, create } from 'zustand';
+import { StoreApi, create } from 'zustand';
 import { PersistOptions, combine, devtools, persist } from 'zustand/middleware';
 
 type SetStoreState<T> = (
@@ -25,12 +25,10 @@ export type MakeUpdater<T> = {
   RESET: () => void;
 };
 
-type Store<S extends StoreApi<unknown>> = UseBoundStore<S>;
-
 export type Methods<T, M> = (
   set: SetStoreState<T>,
   get: () => M & T & MakeUpdater<T>,
-  store: Store<any>
+  store: StoreApi<unknown>
 ) => M;
 
 /**

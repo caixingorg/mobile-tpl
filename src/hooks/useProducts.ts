@@ -26,7 +26,6 @@ export const useProducts = () => {
   return useQuery({
     queryKey: ['products'],
     queryFn: fetchProducts,
-    staleTime: 1000 * 60 * 5, // 5 分钟内数据视为新鲜
   });
 };
 
@@ -35,8 +34,7 @@ export const useProduct = (id: string) => {
   return useQuery({
     queryKey: ['product', id],
     queryFn: () => fetchProductById(id),
-    enabled: !!id, // 只有 id 存在时才请求
-    staleTime: 1000 * 60 * 10, // 10 分钟缓存
+    enabled: !!id,
   });
 };
 

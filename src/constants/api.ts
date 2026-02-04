@@ -17,3 +17,6 @@ export const BUSINESS_CODE = {
   ERROR: 500,
   UNAUTHORIZED: 401,
 } as const;
+
+// 错误处理白名单 - 这些接口的错误不会被全局错误处理器拦截
+export const ERROR_HANDLER_WHITELIST = ['/qiniu/upload/uptoken'];

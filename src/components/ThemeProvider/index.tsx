@@ -5,10 +5,8 @@ export default function ThemeProvider({ children }: { children: React.ReactNode 
   const theme = useSettings(state => state.theme);
 
   useEffect(() => {
-    // 应用主题到 document
     document.documentElement.setAttribute('data-theme', theme);
 
-    // 应用 antd-mobile 主题色
     if (theme === 'dark') {
       document.body.style.backgroundColor = '#1a1a1a';
       document.body.style.color = '#fff';

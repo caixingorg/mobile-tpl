@@ -29,7 +29,7 @@ declare namespace Req {
    */
   interface GetParams extends BaseParams {
     method: 'GET';
-    params?: Record<string, any>;
+    params?: Record<string, unknown>;
   }
 
   /**
@@ -37,7 +37,7 @@ declare namespace Req {
    */
   interface PostParams extends BaseParams {
     method: 'POST';
-    data?: Record<string, any> | FormData;
+    data?: Record<string, unknown> | FormData;
   }
 
   /**
@@ -52,7 +52,7 @@ declare namespace Req {
   /**
    * 响应数据接口
    */
-  interface Response<T = any> {
+  interface Response<T = unknown> {
     data: T;
     status: number;
     statusText: string;

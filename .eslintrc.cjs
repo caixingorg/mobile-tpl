@@ -33,7 +33,7 @@ module.exports = {
     'react/prop-types': 'off',
 
     // TypeScript
-    '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/no-explicit-any': 'warn',
     '@typescript-eslint/no-unused-vars': [
       'error',
       {
@@ -57,4 +57,12 @@ module.exports = {
     semi: 'off',
     indent: 'off',
   },
+  overrides: [
+    {
+      files: ['src/router/routes.tsx'],
+      rules: {
+        'react-refresh/only-export-components': 'off',
+      },
+    },
+  ],
 };

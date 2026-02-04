@@ -11,82 +11,26 @@ import Tailwindcss from 'tailwindcss';
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
-  // loadEnv中三个参数 (mode,dir,base) -> 返回一个包含环境变量的对象
-  // mode: Vite的运行模式,通常是development 或 production
-  // dir: 环境变量文件的查找目录,通常用 process.cwd() 获取当前工作目录
-  // base:环境变量文件的基础名称,通常为空字符串,表示默认的 '.env' 文件
-  const env: Record<string, string> = loadEnv(mode, process.cwd(), ''); // 环境变量
+  const env: Record<string, string> = loadEnv(mode, process.cwd(), '');
   const isProd: boolean = env.VITE_APP_ENV === 'production';
   const isDev: boolean = env.VITE_APP_ENV === 'development';
   const isSit: boolean = env.VITE_APP_ENV === 'sit';
-  // const isHideLog: boolean = env.VITE_APP_LOG === 'true';
 
-  let delDir: (path: string) => void = (path: string) => {};
-  // 非本地环境删除dist文件夹
-  if (!isDev) {
-    delDir = (path: string) => {
-      let files: string[] = [];
-      if (fs.existsSync(path)) {
-        files = fs.readdirSync(path);
-        files.forEach(file => {
-          const curPath: string = path + '/' + file;
-          // 判断是否是文件夹
-          if (fs.statSync(curPath).isDirectory()) {
-            delDir(curPath); //递归删除文件夹
-          } else {
-            // 是文件的话说明是最后一层不需要递归
-            fs.unlinkSync(curPath); //删除文件
-          }
-        });
-        fs.rmdirSync(path);
-      } else {
-        return false;
-      }
-    };
-
-    // 删除目录
-    delDir('./dist');
-    // delDir('./mobile')
+  if (!isDev && fs.existsSync('./dist')) {
+    fs.rmSync('./dist', { recursive: true, force: true });
   }
 
-  // 区分测试和生产的打包环境
   let publicPath: string = '';
-  let outputDir: string = '';
+  let outputDir: string = 'dist';
 
-  // 测试使用dist打包
   if (isSit) {
     publicPath = env.VITE_APP_RESOURCE_URL as string;
-    outputDir = 'dist';
   }
 
-  // 生产/预生产使用时间戳
   if (isProd) {
-    // 前端打包解决缓存问题
-    const formatDate = (): string => {
-      const time: Date = new Date();
-      const y: string = time.getFullYear().toString();
-      let m: string = (time.getMonth() + 1).toString();
-      let d: string = time.getDate().toString();
-      let h: string = time.getHours().toString();
-      let mm: string = time.getMinutes().toString();
-      const ss: string = time.getSeconds().toString();
-      m = Number(m) < 10 ? `0${m}` : m;
-      d = Number(d) < 10 ? `0${d}` : d;
-      h = Number(h) < 10 ? `0${h}` : h;
-      mm = Number(mm) < 10 ? `0${mm}` : mm;
-      return `${y}${m}${d}${h}${mm}${ss}`;
-    };
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const dirName: string = formatDate();
-    // publicPath = `${env.VITE_APP_RESOURCE_URL}${dirName}`
-    publicPath = `${env.VITE_APP_RESOURCE_URL}`;
-    if (isProd) {
-      // outputDir = `./dist/${dirName}`
-      outputDir = `./dist`;
-    }
+    publicPath = env.VITE_APP_RESOURCE_URL;
   }
 
-  // 分析模式
   const isAnalyze = mode === 'analyze';
 
   return {

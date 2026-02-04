@@ -7,9 +7,7 @@ import qs from 'qs';
 import { cancelRequest } from './requestCancel';
 import ErrorCodeHandle from './requestCode';
 import { useAppStore } from '@/store';
-
-/** 不需要处理异常白名单 */
-const whiteList: string[] = ['/qiniu/upload/uptoken'];
+import { ERROR_HANDLER_WHITELIST } from '@/constants/api';
 
 // 创建实例
 const service = axios.create({
@@ -36,7 +34,7 @@ service.interceptors.response.use(
     const url = response.config.url ?? '';
     cancelRequest.removePending(response.config);
 
-    if (!whiteList.some(e => url.match(e))) {
+    if (!ERROR_HANDLER_WHITELIST.some(e => url.match(e))) {
       ErrorCodeHandle(response);
     }
 
